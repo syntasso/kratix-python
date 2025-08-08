@@ -1,0 +1,11 @@
+apiVersion: marketplace.kratix.io/v1alpha1
+kind: redis
+metadata:
+  name: example
+  namespace: default
+  labels:
+    app: example
+  annotations:
+    test.kratix.io/annotation: "This is a test annotation"
+spec:
+  size: small

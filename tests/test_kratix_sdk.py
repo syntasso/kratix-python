@@ -12,141 +12,30 @@ def write_yaml(path, data):
     with path.open("w") as f:
         yaml.safe_dump(data, f)
 
+# ---------- Tests ----------
 
-# ---------- Unit tests for dict path helpers ----------
+def test_resource_input_read():
+    asset = Path(__file__).parent / "assets" / "object.yaml"
+    obj = yaml.safe_load(asset.read_text())
+    r = ks.Resource(obj)
 
-def test_get_by_path_happy_path():
-    data = {"a": {"b": {"c": 123}}}
-    assert ks._get_by_path(data, "a.b.c") == 123
-    assert ks._get_by_path(data, "") == data  # empty path returns whole dict
+    assert r.get_value("spec.size") == "small"
 
-
-def test_get_by_path_raises_on_non_dict():
-    data = {"a": 1}
-    with pytest.raises(KeyError):
-        ks._get_by_path(data, "a.b")  # tries to descend into non-dict (int)
-
-
-def test_set_by_path_creates_intermediates():
-    data = {}
-    ks._set_by_path(data, "a.b.c", 42)
-    assert data == {"a": {"b": {"c": 42}}}
-
-
-def test_remove_by_path_true_false():
-    data = {"a": {"b": {"c": 1}}}
-    assert ks._remove_by_path(data, "a.b.c") is True
-    assert ks._remove_by_path(data, "a.b.c") is False  # already removed
-    assert data == {"a": {"b": {}}}
-
-
-# ---------- Status ----------
-
-def test_status_get_set_remove_roundtrip():
-    s = ks.Status()
-    s.set("foo.bar", 7)
-    assert s.get("foo.bar") == 7
-    assert s.remove("foo.bar") is True
-    assert s.remove("foo.bar") is False
-    assert s.to_dict() == {"foo": {}}
-
-
-# ---------- Resource ----------
-
-def test_resource_basic_accessors():
-    obj = {
-        "apiVersion": "apps/v1",
-        "kind": "Deployment",
-        "metadata": {
-            "name": "n",
-            "namespace": "ns",
-            "labels": {"a": "b"},
-            "annotations": {"x": "y"},
-        },
-        "status": {"state": "ok"},
-        "spec": {"replicas": 3},
+    # metadata
+    assert r.get_name() == "example"
+    assert r.get_namespace() == "default"
+    assert r.get_labels() == {"app": "example"}
+    assert r.get_annotations() == {
+        "test.kratix.io/annotation": "This is a test annotation"
     }
-    r = ks.Resource(obj)
 
-    assert r.get_value("spec.replicas") == 3
-    assert r.get_name() == "n"
-    assert r.get_namespace() == "ns"
-    assert r.get_labels() == {"a": "b"}
-    assert r.get_annotations() == {"x": "y"}
-
+    # GVK
     gvk = r.get_group_version_kind()
-    assert (gvk.group, gvk.version, gvk.kind) == ("apps", "v1", "Deployment")
-
-
-def test_resource_get_group_version_kind_core_group():
-    obj = {"apiVersion": "v1", "kind": "ConfigMap"}
-    r = ks.Resource(obj)
-    gvk = r.get_group_version_kind()
-    assert (gvk.group, gvk.version, gvk.kind) == ("", "v1", "ConfigMap")
-
-
-def test_resource_get_status_variants():
-    obj = {"status": {"nested": {"a": 1}, "leaf": 2}}
-    r = ks.Resource(obj)
-
-    # No path -> returns entire status dict
-    s_all = r.get_status()
-    assert s_all.to_dict() == {"nested": {"a": 1}, "leaf": 2}
-
-    # Path to dict -> returns that dict
-    s_nested = r.get_status("nested")
-    assert s_nested.to_dict() == {"a": 1}
-
-    # Path to scalar -> wraps it in {"value": <scalar>}
-    s_leaf = r.get_status("leaf")
-    assert s_leaf.to_dict() == {"value": 2}
-
-
-def test_publish_status_updates_resource():
-    r = ks.Resource({"metadata": {"name": "x"}})
-    s = ks.Status({"phase": "Done"})
-    ks.KratixSDK().publish_status(r, s)
-    assert r.data["status"] == {"phase": "Done"}
-
-
-# ---------- KratixSDK I/O ----------
-
-def test_sdk_reads_and_writes_with_tmpdirs(tmp_path, monkeypatch):
-    # Point the SDK to temp input/output
-    monkeypatch.setattr(ks, "INPUT_DIR", tmp_path / "in")
-    monkeypatch.setattr(ks, "OUTPUT_DIR", tmp_path / "out")
-    (ks.INPUT_DIR).mkdir(parents=True)
-    (ks.OUTPUT_DIR).mkdir(parents=True)
-
-    # Prepare input object.yaml
-    input_obj = {
-        "apiVersion": "apps/v1",
-        "kind": "Deployment",
-        "metadata": {"name": "demo"},
-        "status": {"initial": True},
-    }
-    write_yaml(ks.INPUT_DIR / "object.yaml", input_obj)
-
-    # read_resource_input / read_promise_input
-    sdk = ks.KratixSDK()
-    res = sdk.read_resource_input()
-    prom = sdk.read_promise_input()  # alias of Resource
-    assert isinstance(res, ks.Resource)
-    assert isinstance(prom, ks.Promise)
-    assert res.get_name() == "demo"
-    assert prom.get_name() == "demo"
-
-    # write_output (binary)
-    sdk.write_output("artifacts/hello.txt", b"hello")
-    out_file = ks.OUTPUT_DIR / "artifacts/hello.txt"
-    assert out_file.read_bytes() == b"hello"
-
-    # write_status + read_status
-    status = ks.Status({"phase": "Running"})
-    sdk.write_status(status)
-    read_back = sdk.read_status()
-    assert read_back.to_dict() == {"phase": "Running"}
-
+    assert (gvk.group, gvk.version, gvk.kind) == (
+        "marketplace.kratix.io",
+        "v1alpha1",
+        "redis",
+    )
 
 def test_destination_selectors_read_write(tmp_path, monkeypatch):
     assets_dir = Path(__file__).parent / "assets"

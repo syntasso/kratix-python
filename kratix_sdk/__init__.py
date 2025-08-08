@@ -61,6 +61,7 @@ class DestinationSelector:
     directory: str
     match_labels: Dict[str, Any] = field(default_factory=dict)
 
+
 class Status:
     def __init__(self, data: Optional[Dict[str, Any]] = None):
         self.data: Dict[str, Any] = data or {}
@@ -117,8 +118,9 @@ class Resource:
         self.data["status"] = status.to_dict()
 
 
-# Promise has no specific behaviour; reuse Resource structure.
-Promise = Resource
+# # Promise has no specific behaviour; reuse Resource structure.
+# Promise = Resource // this does not make sense
+
 
 class KratixSDK:
     def read_resource_input(self) -> Resource:
