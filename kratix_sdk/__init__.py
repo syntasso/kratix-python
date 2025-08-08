@@ -10,6 +10,14 @@ import yaml
 INPUT_DIR = Path("/kratix/input")
 OUTPUT_DIR = Path("/kratix/output")
 
+def set_input_dir(path: Path | str) -> None:
+    global INPUT_DIR
+    INPUT_DIR = Path(path)
+
+
+def set_output_dir(path: Path | str) -> None:
+    global OUTPUT_DIR
+    OUTPUT_DIR = Path(path)
 
 def _get_by_path(data: Dict[str, Any], path: str) -> Any:
     current = data
@@ -48,12 +56,10 @@ class GroupVersionKind:
     version: str
     kind: str
 
-
 @dataclass
 class DestinationSelector:
     directory: str
     match_labels: Dict[str, Any] = field(default_factory=dict)
-
 
 class Status:
     def __init__(self, data: Optional[Dict[str, Any]] = None):
@@ -113,7 +119,6 @@ class Resource:
 
 # Promise has no specific behaviour; reuse Resource structure.
 Promise = Resource
-
 
 class KratixSDK:
     def read_resource_input(self) -> Resource:

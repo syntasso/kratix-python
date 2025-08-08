@@ -1,0 +1,7 @@
+- directory: prod
+  matchLabels:
+    team: team-billing
+- directory: dev
+  matchLabels:
+    env: dev
+    type: terraform
