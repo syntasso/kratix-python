@@ -1,0 +1,10 @@
+__pycache__/
+.python-version
+.pytest_cache/
+.coverage
+.coverage.*
+.cache/
+.ruff_cache/
+.idea/
+.vscode/
+tests/__pycache__/
