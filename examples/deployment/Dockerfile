@@ -9,9 +9,9 @@ COPY kratix_sdk /app/kratix_sdk
 # Put /app on PYTHONPATH so kratix_sdk is importable
 ENV PYTHONPATH=/app
 
-COPY example/deployment /app/example/deployment
+COPY examples/deployment /app/examples/deployment
 
-WORKDIR /app/example/deployment
+WORKDIR /app/examples/deployment
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["echo Set command to promise-configure or resource-configure"]
