@@ -3,6 +3,7 @@ import os
 import yaml
 from pathlib import Path
 from typing import List
+from kubernetes import client as k8s_client, config as k8s_config
 from .resource import Resource
 from .types import DestinationSelector
 from .status import Status
@@ -53,6 +54,12 @@ class KratixSDK:
             data = yaml.safe_load(f) or {}
         return Promise(data)
 
+    def read_status(self) -> Status:
+        path = METADATA_DIR / "status.yaml"
+        with path.open() as f:
+            data = yaml.safe_load(f) or {}
+        return Status(data)
+
     def read_destination_selectors(self) -> List[DestinationSelector]:
         path = METADATA_DIR / "destination_selectors.yaml"
         with path.open() as f:
@@ -100,10 +107,26 @@ class KratixSDK:
         return os.getenv("KRATIX_PIPELINE_NAME", "")
 
     def publish_status(self, resource: Resource, status: Status) -> None:
-        resource.update_status(status)
+        try:
+            k8s_config.load_incluster_config()
+        except Exception:
+            k8s_config.load_kube_config()
 
-    def read_status(self) -> Status:
-        path = METADATA_DIR / "status.yaml"
-        with path.open() as f:
-            data = yaml.safe_load(f) or {}
-        return Status(data)
+        gvk = resource.get_group_version_kind()
+        plural = os.getenv("KRATIX_CRD_PLURAL")
+        if not plural:
+            raise RuntimeError("KRATIX_CRD_PLURAL environment variable is not set")
+
+        namespace = resource.get_namespace()
+        name = resource.get_name()
+        body = {"status": status.to_dict()}
+
+        api = k8s_client.CustomObjectsApi()
+        api.patch_namespaced_custom_object_status(
+            group=gvk.group,
+            version=gvk.version,
+            namespace=namespace,
+            plural=plural,
+            name=name,
+            body=body,
+        )
