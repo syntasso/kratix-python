@@ -7,12 +7,15 @@ import kratix_sdk as ks
 
 # ---------- Helpers ----------
 
+
 def write_yaml(path, data):
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w") as f:
         yaml.safe_dump(data, f)
 
+
 # ---------- Tests ----------
+
 
 def test_resource_input_read():
     asset = Path(__file__).parent / "assets" / "object.yaml"
@@ -37,6 +40,7 @@ def test_resource_input_read():
         "redis",
     )
 
+
 def test_destination_selectors_read_write(tmp_path):
     assets_dir = Path(__file__).parent / "assets"
     asset_file = assets_dir / "destination_selectors.yaml"
@@ -59,7 +63,9 @@ def test_destination_selectors_read_write(tmp_path):
     # Write and compare with the original asset file
     expected = yaml.safe_load(asset_file.read_text())
     sdk.write_destination_selectors(selectors)
-    out = yaml.safe_load((ks.get_output_dir() / "destination_selectors.yaml").read_text())
+    out = yaml.safe_load(
+        (ks.get_output_dir() / "destination_selectors.yaml").read_text()
+    )
     assert out == expected
 
 

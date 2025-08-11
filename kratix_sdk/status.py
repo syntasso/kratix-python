@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, Dict, Optional
 from .utils import _get_by_path, _set_by_path, _remove_by_path
 
+
 class Status:
     def __init__(self, data: Optional[Dict[str, Any]] = None):
         self.data: Dict[str, Any] = data or {}

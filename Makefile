@@ -12,3 +12,6 @@ test:
 
 lint:
 	ruff check kratix_sdk tests
+
+fmt:
+	ruff format kratix_sdk tests

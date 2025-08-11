@@ -1,5 +1,6 @@
 from typing import Any, Dict
 
+
 def _get_by_path(data: Dict[str, Any], path: str) -> Any:
     current = data
     if not path:

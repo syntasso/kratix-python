@@ -11,16 +11,24 @@ from .promise import Promise
 INPUT_DIR = Path("/kratix/input")
 OUTPUT_DIR = Path("/kratix/output")
 
-def get_input_dir() -> Path: return INPUT_DIR
-def get_output_dir() -> Path: return OUTPUT_DIR
+
+def get_input_dir() -> Path:
+    return INPUT_DIR
+
+
+def get_output_dir() -> Path:
+    return OUTPUT_DIR
+
 
 def set_input_dir(path: Path | str) -> None:
     global INPUT_DIR
     INPUT_DIR = Path(path)
 
+
 def set_output_dir(path: Path | str) -> None:
     global OUTPUT_DIR
     OUTPUT_DIR = Path(path)
+
 
 class KratixSDK:
     def read_resource_input(self) -> Resource:
@@ -60,13 +68,10 @@ class KratixSDK:
         with path.open("w") as f:
             yaml.safe_dump(status.to_dict(), f)
 
-    def write_destination_selectors(
-        self, selectors: List[DestinationSelector]
-    ) -> None:
+    def write_destination_selectors(self, selectors: List[DestinationSelector]) -> None:
         path = OUTPUT_DIR / "destination_selectors.yaml"
         data = [
-            {"directory": s.directory, "matchLabels": s.match_labels}
-            for s in selectors
+            {"directory": s.directory, "matchLabels": s.match_labels} for s in selectors
         ]
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w") as f:

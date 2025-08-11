@@ -4,6 +4,7 @@ from .utils import _get_by_path
 from .status import Status
 from .types import GroupVersionKind
 
+
 class Resource:
     def __init__(self, data: Dict[str, Any]):
         self.data = data
