@@ -1,0 +1,6 @@
+apiVersion: marketplace.kratix.io/v1alpha1
+kind: Example
+metadata:
+  name: test
+spec:
+  key: new-dep

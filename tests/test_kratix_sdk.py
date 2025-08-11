@@ -155,7 +155,7 @@ def test_promise_input_read():
 
 def test_destination_selectors_read_write(tmp_path):
     assets_dir = Path(__file__).parent / "assets"
-    asset_file = assets_dir / "destination_selectors.yaml"
+    asset_file = assets_dir / "destination-selectors.yaml"
     assert asset_file.exists(), f"Missing test asset: {asset_file}"
 
     ks.set_metadata_dir(assets_dir)
@@ -175,7 +175,7 @@ def test_destination_selectors_read_write(tmp_path):
     expected = yaml.safe_load(asset_file.read_text())
     sdk.write_destination_selectors(selectors)
 
-    written = yaml.safe_load((out_meta / "destination_selectors.yaml").read_text())
+    written = yaml.safe_load((out_meta / "destination-selectors.yaml").read_text())
     assert written == expected
 
 

@@ -11,5 +11,5 @@ class GroupVersionKind:
 
 @dataclass
 class DestinationSelector:
-    directory: str
+    directory: str = ""
     match_labels: Dict[str, Any] = field(default_factory=dict)

@@ -61,7 +61,7 @@ class KratixSDK:
         return Status(data)
 
     def read_destination_selectors(self) -> List[DestinationSelector]:
-        path = METADATA_DIR / "destination_selectors.yaml"
+        path = METADATA_DIR / "destination-selectors.yaml"
         with path.open() as f:
             raw = yaml.safe_load(f) or []
         selectors = [
@@ -86,10 +86,13 @@ class KratixSDK:
             yaml.safe_dump(status.to_dict(), f)
 
     def write_destination_selectors(self, selectors: List[DestinationSelector]) -> None:
-        path = METADATA_DIR / "destination_selectors.yaml"
-        data = [
-            {"directory": s.directory, "matchLabels": s.match_labels} for s in selectors
-        ]
+        path = METADATA_DIR / "destination-selectors.yaml"
+        data = []
+        for s in selectors:
+            data.append({
+                "directory": s.directory or "",   # directory is optional
+                "matchLabels": s.match_labels or {},
+            })
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w") as f:
             yaml.safe_dump(data, f)
