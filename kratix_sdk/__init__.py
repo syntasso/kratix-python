@@ -6,6 +6,8 @@ from .kratix_sdk import (
     set_output_dir,
     get_input_dir,
     get_output_dir,
+    get_metadata_dir,
+    set_metadata_dir,
 )
 from .promise import Promise
 from .types import GroupVersionKind, DestinationSelector

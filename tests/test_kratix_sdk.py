@@ -13,8 +13,54 @@ def write_yaml(path, data):
     with path.open("w") as f:
         yaml.safe_dump(data, f)
 
+@pytest.fixture(autouse=True)
+def reset_dirs(tmp_path, monkeypatch):
+    """
+    Keep global dirs isolated per test.
+    """
+    in_dir = tmp_path / "in"
+    out_dir = tmp_path / "out"
+    meta_dir = tmp_path / "meta"
+    in_dir.mkdir()
+    out_dir.mkdir()
+    meta_dir.mkdir()
+    ks.set_input_dir(in_dir)
+    ks.set_output_dir(out_dir)
+    ks.set_metadata_dir(meta_dir)
+    yield
+
 
 # ---------- Tests ----------
+
+def test_status_read_and_write(tmp_path):
+    assets = Path(__file__).parent / "assets"
+    src = assets / "status.yaml"
+    expected_after_update = assets / "updated-status.yaml"
+    assert src.exists(), f"Missing asset: {src}"
+    assert expected_after_update.exists(), f"Missing asset: {expected_after_update}"
+
+    out_dir = tmp_path / "out"
+    ks.set_output_dir(out_dir)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "status.yaml").write_text(src.read_text())
+
+    sdk = ks.KratixSDK()
+    st = sdk.read_status()
+    conditions = st.get("conditions")
+    assert isinstance(conditions, list)
+    assert conditions[0]["type"] == "Ready"
+    assert conditions[0]["status"] == "True"
+    assert st.get("observedGeneration") == 3
+    assert st.get("message") == "first-pipeline"
+    assert st.get("temp-key") == "temp-value"
+
+    st.set("message", "second-pipeline")
+    st.remove("temp-key")
+    sdk.write_status(st)
+
+    written = yaml.safe_load((out_dir / "status.yaml").read_text()) or {}
+    expected = yaml.safe_load(expected_after_update.read_text()) or {}
+    assert written == expected
 
 
 def test_resource_input_read():

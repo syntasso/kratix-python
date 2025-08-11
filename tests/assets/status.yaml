@@ -1,0 +1,6 @@
+conditions:
+  - type: Ready
+    status: "True"
+observedGeneration: 3
+temp-key: "temp-value"
+message: "first-pipeline"

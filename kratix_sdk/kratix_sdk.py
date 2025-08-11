@@ -10,7 +10,7 @@ from .promise import Promise
 
 INPUT_DIR = Path("/kratix/input")
 OUTPUT_DIR = Path("/kratix/output")
-
+METADATA_DIR = Path("/kratix/metadata")
 
 def get_input_dir() -> Path:
     return INPUT_DIR
@@ -18,6 +18,10 @@ def get_input_dir() -> Path:
 
 def get_output_dir() -> Path:
     return OUTPUT_DIR
+
+
+def get_metadata_dir() -> Path:
+    return METADATA_DIR
 
 
 def set_input_dir(path: Path | str) -> None:
@@ -28,6 +32,10 @@ def set_input_dir(path: Path | str) -> None:
 def set_output_dir(path: Path | str) -> None:
     global OUTPUT_DIR
     OUTPUT_DIR = Path(path)
+
+def set_metadata_dir(path: Path | str) -> None:
+    global METADATA_DIR
+    METADATA_DIR = Path(path)
 
 
 class KratixSDK:

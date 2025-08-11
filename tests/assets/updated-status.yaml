@@ -1,0 +1,5 @@
+conditions:
+  - type: Ready
+    status: "True"
+observedGeneration: 3
+message: "second-pipeline"
