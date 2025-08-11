@@ -8,13 +8,8 @@ import kratix_sdk as ks
 # ---------- Helpers ----------
 
 
-def write_yaml(path, data):
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w") as f:
-        yaml.safe_dump(data, f)
-
 @pytest.fixture(autouse=True)
-def reset_dirs(tmp_path, monkeypatch):
+def reset_dirs(tmp_path):
     """
     Keep global dirs isolated per test.
     """
@@ -30,7 +25,8 @@ def reset_dirs(tmp_path, monkeypatch):
     yield
 
 
-# ---------- Tests ----------
+# ---------- Status Tests ----------
+
 
 def test_status_read_and_write(tmp_path):
     assets = Path(__file__).parent / "assets"
@@ -39,13 +35,10 @@ def test_status_read_and_write(tmp_path):
     assert src.exists(), f"Missing asset: {src}"
     assert expected_after_update.exists(), f"Missing asset: {expected_after_update}"
 
-    out_dir = tmp_path / "out"
-    ks.set_output_dir(out_dir)
-    out_dir.mkdir(parents=True, exist_ok=True)
-    (out_dir / "status.yaml").write_text(src.read_text())
-
+    ks.set_metadata_dir(assets)
     sdk = ks.KratixSDK()
     st = sdk.read_status()
+
     conditions = st.get("conditions")
     assert isinstance(conditions, list)
     assert conditions[0]["type"] == "Ready"
@@ -56,21 +49,73 @@ def test_status_read_and_write(tmp_path):
 
     st.set("message", "second-pipeline")
     st.remove("temp-key")
+
+    out_meta = tmp_path / "metadata"
+    out_meta.mkdir(parents=True, exist_ok=True)
+    ks.set_metadata_dir(out_meta)
     sdk.write_status(st)
 
-    written = yaml.safe_load((out_dir / "status.yaml").read_text()) or {}
+    written = yaml.safe_load((out_meta / "status.yaml").read_text()) or {}
     expected = yaml.safe_load(expected_after_update.read_text()) or {}
     assert written == expected
 
 
+def test_status_get_empty_key():
+    root = {"a": {"b": 1, "c": {"d": 2}}}
+    s = ks.Status(root)
+    assert s.get("") is root
+
+
+def test_status_get_missing_key():
+    s = ks.Status({"a": {"b": 1}, "c": {"d": 2}})
+    with pytest.raises(KeyError):
+        s.get("a.c.e")
+
+
+def test_status_get_descend_into_non_map():
+    s = ks.Status({"e": 1})
+    with pytest.raises(KeyError):
+        s.get("e.b")
+
+
+def test_status_set_empty_key():
+    s = ks.Status({})
+    with pytest.raises(ValueError):
+        s.set("", 123)
+
+
+def test_status_set_non_map_key():
+    s = ks.Status({"a": 1})
+    with pytest.raises(TypeError):
+        s.set("a.b", 2)
+
+
+def test_status_remove_empty_key():
+    s = ks.Status({"a": {"b": 1}})
+    with pytest.raises(ValueError):
+        s.remove("")
+
+
+def test_status_remove_missing_key():
+    s = ks.Status({"a": {"b": 1}})
+    with pytest.raises(KeyError):
+        s.remove("a.c")
+
+
+# ---------- Rsource Tests ----------
+
+
 def test_resource_input_read():
-    asset = Path(__file__).parent / "assets" / "object.yaml"
-    obj = yaml.safe_load(asset.read_text())
-    r = ks.Resource(obj)
+    assets_dir = Path(__file__).parent / "assets"
+    src = assets_dir / "object.yaml"
+    assert src.exists(), f"Missing asset: {src}"
+    ks.set_input_dir(assets_dir)
 
+    sdk = ks.KratixSDK()
+    r = sdk.read_resource_input()
+
+    assert isinstance(r, ks.Resource)
     assert r.get_value("spec.size") == "small"
-
-    # metadata
     assert r.get_name() == "example"
     assert r.get_namespace() == "default"
     assert r.get_labels() == {"app": "example"}
@@ -87,32 +132,54 @@ def test_resource_input_read():
     )
 
 
+# ---------- Promise Tests ----------
+
+
+def test_promise_input_read():
+    assets = Path(__file__).parent / "assets" / "promise"
+    src = assets / "object.yaml"
+    assert src.exists(), f"Missing asset: {src}"
+    ks.set_input_dir(assets)
+
+    sdk = ks.KratixSDK()
+    p = sdk.read_promise_input()
+
+    assert isinstance(p, ks.Promise)
+    assert p.get_name() == "namespace"
+    assert p.get_labels() == {"kratix.io/promise-version": "v0.1.0"}
+    assert p.get_annotations() == {}
+
+
+# ---------- Destination Selectors Tests ----------
+
+
 def test_destination_selectors_read_write(tmp_path):
     assets_dir = Path(__file__).parent / "assets"
     asset_file = assets_dir / "destination_selectors.yaml"
     assert asset_file.exists(), f"Missing test asset: {asset_file}"
 
-    ks.set_input_dir(assets_dir)
-    ks.set_output_dir(tmp_path / "out")
-    ks.get_output_dir().mkdir(parents=True, exist_ok=True)
-
+    ks.set_metadata_dir(assets_dir)
     sdk = ks.KratixSDK()
 
-    # Read selectors from assets/destination_selectors.yaml
     selectors = sdk.read_destination_selectors()
     assert selectors[0].directory == "prod"
     assert selectors[0].match_labels == {"team": "team-billing"}
-
     assert selectors[1].directory == "dev"
     assert selectors[1].match_labels == {"env": "dev", "type": "terraform"}
 
-    # Write and compare with the original asset file
+    # Write to a temp METADATA_DIR and compare to the asset
+    out_meta = tmp_path / "metadata"
+    out_meta.mkdir(parents=True, exist_ok=True)
+    ks.set_metadata_dir(out_meta)
+
     expected = yaml.safe_load(asset_file.read_text())
     sdk.write_destination_selectors(selectors)
-    out = yaml.safe_load(
-        (ks.get_output_dir() / "destination_selectors.yaml").read_text()
-    )
-    assert out == expected
+
+    written = yaml.safe_load((out_meta / "destination_selectors.yaml").read_text())
+    assert written == expected
+
+
+# ---------- Envvars Tests ----------
 
 
 def test_env_vars_exposed(monkeypatch):
@@ -126,3 +193,43 @@ def test_env_vars_exposed(monkeypatch):
     assert sdk.workflow_type() == "backstage-resource"
     assert sdk.promise_name() == "postgres-ha"
     assert sdk.pipeline_name() == "configure-database"
+
+
+# ---------- Write to Output Tests ----------
+
+
+def test_write_output(tmp_path):
+    ks.set_output_dir(tmp_path / "out")
+    sdk = ks.KratixSDK()
+    manifest_path = "nested/dir/deployment.yaml"
+    manifest = {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {
+            "name": "nginx",
+        },
+        "spec": {
+            "replicas": 1,
+            "template": {
+                "spec": {
+                    "containers": [
+                        {
+                            "image": "nginx:1.25",
+                        }
+                    ]
+                },
+            },
+        },
+    }
+
+    data = yaml.safe_dump(manifest).encode("utf-8")
+    sdk.write_output(manifest_path, data)
+
+    dest = ks.get_output_dir() / manifest_path
+    assert dest.parent == ks.get_output_dir() / "nested" / "dir"
+    assert dest.is_file()
+    written = yaml.safe_load(dest.read_text())
+    assert written == manifest
+    assert written["kind"] == "Deployment"
+    assert written["metadata"]["name"] == "nginx"
+    assert written["spec"]["template"]["spec"]["containers"][0]["image"] == "nginx:1.25"

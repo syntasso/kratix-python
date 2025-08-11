@@ -14,8 +14,8 @@ class Status:
     def set(self, path: str, value: Any) -> None:
         _set_by_path(self.data, path, value)
 
-    def remove(self, path: str) -> bool:
-        return _remove_by_path(self.data, path)
+    def remove(self, path: str) -> None:
+        _remove_by_path(self.data, path)
 
     def to_dict(self) -> Dict[str, Any]:
         return self.data

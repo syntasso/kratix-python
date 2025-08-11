@@ -39,6 +39,3 @@ class Resource:
 
     def get_annotations(self) -> Dict[str, str]:
         return self.data.get("metadata", {}).get("annotations", {})
-
-    def update_status(self, status: Status) -> None:
-        self.data["status"] = status.to_dict()
