@@ -89,10 +89,12 @@ class KratixSDK:
         path = METADATA_DIR / "destination-selectors.yaml"
         data = []
         for s in selectors:
-            data.append({
-                "directory": s.directory or "",   # directory is optional
-                "matchLabels": s.match_labels or {},
-            })
+            data.append(
+                {
+                    "directory": s.directory or "",  # directory is optional
+                    "matchLabels": s.match_labels or {},
+                }
+            )
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w") as f:
             yaml.safe_dump(data, f)
@@ -122,9 +124,12 @@ class KratixSDK:
 
         namespace = resource.get_namespace()
         name = resource.get_name()
-        body = {"status": status.to_dict()}
 
+        body = {"status": status.to_dict()}
         api = k8s_client.CustomObjectsApi()
+        api.api_client.set_default_header(
+            "Content-Type", "application/merge-patch+json"
+        )
         api.patch_namespaced_custom_object_status(
             group=gvk.group,
             version=gvk.version,

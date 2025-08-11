@@ -51,7 +51,12 @@ def resource_configure() -> int:
     data = yaml.safe_dump(manifest).encode("utf-8")
     sdk.write_output("deployment.yaml", data)
 
-    # 2) set the status
+    # 2) publish status
+    status = ks.Status()
+    status.set("phase", "updates-from-mid-stage")
+    sdk.publish_status(resource, status)
+
+    # 3) set status
     status = ks.Status()
     status.set("message", f"created deployment {key}")
     sdk.write_status(status)
