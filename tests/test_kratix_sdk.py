@@ -37,14 +37,14 @@ def test_resource_input_read():
         "redis",
     )
 
-def test_destination_selectors_read_write(tmp_path, monkeypatch):
+def test_destination_selectors_read_write(tmp_path):
     assets_dir = Path(__file__).parent / "assets"
     asset_file = assets_dir / "destination_selectors.yaml"
     assert asset_file.exists(), f"Missing test asset: {asset_file}"
 
-    monkeypatch.setattr(ks, "INPUT_DIR", assets_dir)
-    monkeypatch.setattr(ks, "OUTPUT_DIR", tmp_path / "out")
-    ks.OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    ks.set_input_dir(assets_dir)
+    ks.set_output_dir(tmp_path / "out")
+    ks.get_output_dir().mkdir(parents=True, exist_ok=True)
 
     sdk = ks.KratixSDK()
 
@@ -59,7 +59,7 @@ def test_destination_selectors_read_write(tmp_path, monkeypatch):
     # Write and compare with the original asset file
     expected = yaml.safe_load(asset_file.read_text())
     sdk.write_destination_selectors(selectors)
-    out = yaml.safe_load((ks.OUTPUT_DIR / "destination_selectors.yaml").read_text())
+    out = yaml.safe_load((ks.get_output_dir() / "destination_selectors.yaml").read_text())
     assert out == expected
 
 
