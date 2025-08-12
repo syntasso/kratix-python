@@ -1,21 +1,16 @@
-PYTHON := python # or python3, depending on your environment
-PIP := $(PYTHON) -m pip
-
-.PHONY: test lint clean
+.PHONY: test lint fmt clean install
 
 install: # install dependencies for running tests and linting
-	$(PIP) install --upgrade pip
-	$(PIP) install -r requirements.txt
-	$(PIP) install -r requirements-dev.txt
+	poetry install
 
 test:
-	pytest
+	poetry run pytest
 
 lint:
-	ruff check kratix_sdk tests
+	poetry run ruff check kratix_sdk tests
 
 fmt:
-	ruff format kratix_sdk tests
+	poetry run ruff format kratix_sdk tests
 
 build-and-load-configure-image:
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \

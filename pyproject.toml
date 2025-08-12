@@ -1,24 +1,22 @@
-[project]
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
 name = "kratix-sdk"
 version = "0.0.1"
 description = "Kratix SDK for writing Promises workflows"
 readme = "Readme.md"
-requires-python = ">=3.12"
-license = { file = "LICENSE" }
+license = "Apache-2.0"
+homepage = "https://github.com/syntasso/kratix-python"
+repository = "https://github.com/syntasso/kratix-python"
+packages = [{include = "kratix_sdk"}]
 
-dependencies = [
-  "kubernetes>=33.0.0",
-  "PyYAML>=6.0.0",
-]
+[tool.poetry.dependencies]
+python = ">=3.8"
+kubernetes = ">=33.0.0,<34"
+PyYAML = ">=6.0.0,<7"
 
-[project.urls]
-Homepage = "https://github.com/syntasso/kratix-python"
-
-[tool.setuptools]
-packages = ["kratix_sdk"]
-
-[project.optional-dependencies]
-dev = [
-  "pytest>=8.0.0",
-  "ruff>=0.12.0",
-]
+[tool.poetry.group.dev.dependencies]
+pytest = "8.4.1"
+ruff = "0.12.7"
