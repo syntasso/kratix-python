@@ -16,3 +16,8 @@ build-and-load-configure-image:
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \
 	-t ghcr.io/syntasso/example-deployment-configure:v0.0.1 -f examples/deployment/Dockerfile .
 	kind load docker-image ghcr.io/syntasso/example-deployment-configure:v0.0.1 -n platform
+
+build-and-load-system-test-image:
+	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \
+	-t ghcr.io/syntasso/kratix-python/sdk-test:v1.0.0 -f system/assets/workflow/Dockerfile .
+	kind load docker-image ghcr.io/syntasso/kratix-python/sdk-test:v1.0.0 -n platform
