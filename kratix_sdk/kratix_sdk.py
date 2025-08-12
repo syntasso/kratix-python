@@ -42,24 +42,30 @@ def set_metadata_dir(path: Path | str) -> None:
 
 class KratixSDK:
     def read_resource_input(self) -> Resource:
+        """Reads the file in /kratix/input/object.yaml and returns a Resource.
+        Can be used in Resource configure workflow."""
         path = INPUT_DIR / "object.yaml"
         with path.open() as f:
             data = yaml.safe_load(f) or {}
         return Resource(data)
 
     def read_promise_input(self) -> Promise:
+        """Reads the file in /kratix/input/object.yaml and returns a Promise.
+        Can be used in Promise configure workflow."""
         path = INPUT_DIR / "object.yaml"
         with path.open() as f:
             data = yaml.safe_load(f) or {}
         return Promise(data)
 
     def read_status(self) -> Status:
+        """Reads the file in /kratix/metadata/status.yaml and returns a Status."""
         path = METADATA_DIR / "status.yaml"
         with path.open() as f:
             data = yaml.safe_load(f) or {}
         return Status(data)
 
     def read_destination_selectors(self) -> List[DestinationSelector]:
+        """Reads the file in /kratix/metadata/destination-selectors.yaml and returns a list of DestinationSelector"""
         path = METADATA_DIR / "destination-selectors.yaml"
         with path.open() as f:
             raw = yaml.safe_load(f) or []
@@ -73,18 +79,21 @@ class KratixSDK:
         return selectors
 
     def write_output(self, relative_path: str, content: bytes) -> None:
+        """writes the content to the specifies file at the path /kratix/output/relative_path."""
         dest = OUTPUT_DIR / relative_path
         dest.parent.mkdir(parents=True, exist_ok=True)
         with dest.open("wb") as f:
             f.write(content)
 
     def write_status(self, status: Status) -> None:
+        """writes the specified status to the /kratix/metadata/status.yaml."""
         path = METADATA_DIR / "status.yaml"
         path.parent.mkdir(parents=True, exist_ok=True)
         with path.open("w") as f:
             yaml.safe_dump(status.to_dict(), f)
 
     def write_destination_selectors(self, selectors: List[DestinationSelector]) -> None:
+        """writes the specified Destination Selectors to the /kratix/metadata/destination_selectors.yaml."""
         path = METADATA_DIR / "destination-selectors.yaml"
         data = []
         for s in selectors:
@@ -99,18 +108,25 @@ class KratixSDK:
             yaml.safe_dump(data, f)
 
     def workflow_action(self) -> str:
+        """Returns the value of KRATIX_WORKFLOW_ACTION environment variable."""
         return os.getenv("KRATIX_WORKFLOW_ACTION", "")
 
     def workflow_type(self) -> str:
+        """Returns the value of KRATIX_WORKFLOW_TYPE environment variable."""
         return os.getenv("KRATIX_WORKFLOW_TYPE", "")
 
     def promise_name(self) -> str:
+        """Returns the value of KRATIX_PROMISE_NAME environment variable."""
         return os.getenv("KRATIX_PROMISE_NAME", "")
 
     def pipeline_name(self) -> str:
+        """Returns the value of KRATIX_PIPELINE_NAME environment variable."""
         return os.getenv("KRATIX_PIPELINE_NAME", "")
 
     def publish_status(self, resource: Resource, status: Status) -> None:
+        """Updates the status of a Resource.
+        This function uses the Kubernetes API to patch the status of a Custom Resource.
+        Update is instant and will not change the /kratix/metadata/status.yaml file."""
         try:
             k8s_config.load_incluster_config()
         except Exception:
