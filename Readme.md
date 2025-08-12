@@ -2,6 +2,16 @@
 
 This SDK was implemented in line with the [Kratix SDK Contract](https://github.com/syntasso/kratix/blob/main/sdk/contract.go).
 
+## Installation
+
+```bash
+# Install from git
+pip install git+https://github.com/syntasso/kratix-python.git
+
+# Or for development
+pip install -e .
+```
+
 ## Usage & Development
 
 Library is under `kratix_sdk`. Examples of Promises using this library can be found under `examples`.
