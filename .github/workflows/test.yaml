@@ -1,9 +1,10 @@
-name: Test-kratix-sdk
+name: Test-and-release-kratix-sdk
 
 on:
   push:
     branches: [ main ]
   pull_request:
+    branches-ignore: [ "release-please--**" ]
 
 jobs:
   test:
@@ -30,4 +31,40 @@ jobs:
         run: make install lint
       - name: Tests
         run: make test
-      
+
+  release-please:
+    name: Create Release PR
+    runs-on: ubuntu-latest
+    needs: [test]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+
+    - name: Install Release Please
+      run: npm install -g release-please
+
+    - name: Create pending releases
+      if: github.ref == 'refs/heads/main'
+      run: |
+        release-please \
+          --token="${{ secrets.GITHUB_TOKEN }}" \
+          --repo-url="${{ github.repository }}" \
+          github-release
+
+    - name: Create Release PR
+      run: |
+        release-please release-pr \
+          --repo-url="${{ github.repository }}" \
+          --package-name="kratix-skd" \
+          --token="${{ secrets.GITHUB_TOKEN }}" \
+          --release-type="python"
