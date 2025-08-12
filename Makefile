@@ -5,7 +5,8 @@ PIP := $(PYTHON) -m pip
 
 install: # install dependencies for running tests and linting
 	$(PIP) install --upgrade pip
-	$(PIP) install ruff pytest pyyaml
+	$(PIP) install -r requirements.txt
+	$(PIP) install -r requirements-dev.txt
 
 test:
 	pytest

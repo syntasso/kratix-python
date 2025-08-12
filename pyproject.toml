@@ -1,0 +1,24 @@
+[project]
+name = "kratix-sdk"
+version = "0.0.1"
+description = "Kratix SDK for writing Promises workflows"
+readme = "Readme.md"
+requires-python = ">=3.12"
+license = { file = "LICENSE" }
+
+dependencies = [
+  "kubernetes>=33.0.0",
+  "PyYAML>=6.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/syntasso/kratix-python"
+
+[tool.setuptools]
+packages = ["kratix_sdk"]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "ruff>=0.12.0",
+]
