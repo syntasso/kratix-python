@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 from typing import Any, Dict, Optional
 from .utils import _get_by_path, _set_by_path, _remove_by_path
 

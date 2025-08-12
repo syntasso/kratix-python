@@ -1,4 +1,3 @@
-from __future__ import annotations
 from typing import Any, Dict
 from .utils import _get_by_path
 from .status import Status

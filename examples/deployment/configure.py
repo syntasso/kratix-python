@@ -1,11 +1,8 @@
-# examples/handlers.py
-from __future__ import annotations
-
 import sys
 from typing import List
 
 import yaml
-import kratix_sdk as ks  # your package
+import kratix_sdk as ks
 
 
 def promise_configure() -> int:
@@ -13,12 +10,12 @@ def promise_configure() -> int:
     sdk = ks.KratixSDK()
     promise = sdk.read_promise_input()
     name = promise.get_name()
-    print(name)  # Kratix captures stdout as pipeline output
+    print(name)
     return 0
 
 
 def _deployment_manifest(name: str) -> dict:
-    """Minimal valid Deployment manifest named after `name`."""
+    """Deployment manifest"""
     return {
         "apiVersion": "apps/v1",
         "kind": "Deployment",
