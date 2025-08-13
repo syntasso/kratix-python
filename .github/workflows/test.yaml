@@ -65,6 +65,5 @@ jobs:
       run: |
         release-please release-pr \
           --repo-url="${{ github.repository }}" \
-          --package-name="kratix-sdk" \
           --token="${{ secrets.GITHUB_TOKEN }}" \
           --release-type="python"
