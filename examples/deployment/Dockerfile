@@ -2,9 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y git
+
 RUN pip install --no-cache-dir kubernetes
 
-COPY kratix_sdk /app/kratix_sdk
+RUN python -m pip install git+https://github.com/syntasso/kratix-python.git
 
 # Put /app on PYTHONPATH so kratix_sdk is importable
 ENV PYTHONPATH=/app
