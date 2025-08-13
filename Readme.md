@@ -12,14 +12,63 @@ pip install git+https://github.com/syntasso/kratix-python.git
 pip install -e .
 ```
 
-## Usage & Development
+## Usage
+
+```python
+    # Initialize the sdk
+    sdk = ks.KratixSDK()
+    resource = sdk.read_resource_input()
+
+    # Read from resource input
+    name = resource.get_value("spec.key")
+
+    # Write workload documents to OUTPUT_DIR
+    manifest = {
+        "apiVersion": "apps/v1",
+        "kind": "Deployment",
+        "metadata": {"name": name, "labels": {"app": name}},
+        "spec": {
+            "replicas": 1,
+            "selector": {"matchLabels": {"app": name}},
+            "template": {
+                "metadata": {"labels": {"app": name}},
+                "spec": {
+                    "containers": [
+                        {"name": name, "image": "busybox"}
+                    ]
+                },
+            },
+        },
+    }
+    data = yaml.safe_dump(manifest).encode("utf-8")
+    sdk.write_output("deployment.yaml", data)
+
+    # Publish status during workflow run
+    status = ks.Status()
+    status.set("phase", "updates-from-mid-stage")
+    sdk.publish_status(resource, status)
+
+    # Set status
+    status = ks.Status()
+    status.set("message", f"created deployment {key}")
+    sdk.write_status(status)
+
+    # Write destination selectors for dynamic scheduling
+    selectors: List[ks.DestinationSelector] = [
+        ks.DestinationSelector(match_labels={"environment": "test"})
+    ]
+    sdk.write_destination_selectors(selectors)
+
+```
+
+## Development
 
 Library is under `kratix_sdk`. Examples of Promises using this library can be found under `examples`.
+
+* `make install` installs all dependencies
 
 * `make test` runs all tests under `tests/`
 
 * `make fmt` code formatting using `ruff`
 
 * `make lint` linting using `ruff`
-
-* `make build-and-load-configure-image` build and load the image used for example/deployment/promise.yaml to your local kind cluster
