@@ -12,6 +12,9 @@ lint:
 fmt:
 	poetry run ruff format kratix_sdk tests
 
+generate-docs:
+	poetry run pdoc src/kratix_sdk -o docs
+
 build-and-load-configure-image:
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \
 	-t ghcr.io/syntasso/example-deployment-configure:v0.0.1 -f examples/deployment/Dockerfile .
