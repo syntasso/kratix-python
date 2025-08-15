@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "07:30"
+    open-pull-requests-limit: 10
+    labels: ["dependencies"]
+    groups: # group bumps to reduce number of PRs
+      minor-and-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
