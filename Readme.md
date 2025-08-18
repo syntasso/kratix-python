@@ -2,6 +2,10 @@
 
 This SDK was implemented in line with the [Kratix SDK Contract](https://github.com/syntasso/kratix/blob/main/sdk/contract.go).
 
+## Documentation
+
+You can read library document [here](https://syntasso.github.io/kratix-python).
+
 ## Installation
 
 ```bash
