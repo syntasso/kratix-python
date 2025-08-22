@@ -1,13 +1,19 @@
 from typing import Any, Dict
 
 
-def _get_by_path(data: Dict[str, Any], path: str) -> Any:
+def _get_by_path(data: Dict[str, Any], path: str, **kwargs) -> Any:
+    has_default_key = "default" in kwargs
+
     current = data
     if not path:
         return current
     for key in path.split("."):
         if not isinstance(current, dict):
             raise KeyError(f"Cannot descend into non-dict at {key}")
+        if key not in current:
+            if has_default_key:
+                return kwargs["default"]
+            raise KeyError(f"Missing key in path: '{key}'")
         current = current[key]
     return current
 

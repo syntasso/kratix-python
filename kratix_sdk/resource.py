@@ -8,9 +8,9 @@ class Resource:
     def __init__(self, data: Dict[str, Any]):
         self.data = data
 
-    def get_value(self, path: str) -> Any:
+    def get_value(self, path: str, **kwargs) -> Any:
         """Get a value from the resource request by path."""
-        return _get_by_path(self.data, path)
+        return _get_by_path(self.data, path, **kwargs)
 
     def get_status(self, path: str = "") -> Status:
         """Get the status of the resource by path.
