@@ -1,5 +1,6 @@
 from pathlib import Path
 
+import pytest
 import kratix_sdk as ks
 
 # ---------- Rsource Tests ----------
@@ -16,6 +17,10 @@ def test_resource_input_read():
 
     assert isinstance(r, ks.Resource)
     assert r.get_value("spec.size") == "small"
+    with pytest.raises(KeyError):
+        r.get_value("does_not_exist")
+    assert r.get_value("does_not_exist", default="default") == "default"
+    assert r.get_value("spec.age", default=None) is None
     assert r.get_name() == "example"
     assert r.get_namespace() == "default"
     assert r.get_labels() == {"app": "example"}
