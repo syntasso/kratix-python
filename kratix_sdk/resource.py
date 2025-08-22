@@ -9,7 +9,19 @@ class Resource:
         self.data = data
 
     def get_value(self, path: str, **kwargs) -> Any:
-        """Get a value from the resource request by path."""
+        """Get a value from the resource request by path.
+        Args:
+            path (str): The path to the value in the resource data.
+
+        KWargs:
+            default: The default value to return if the path is not found.
+
+        Raises:
+            KeyError: If the path is not found and no default is provided.
+
+        Returns:
+            Any: The value at the specified path in the resource data.
+        """
         return _get_by_path(self.data, path, **kwargs)
 
     def get_status(self, path: str = "") -> Status:
