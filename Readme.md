@@ -15,6 +15,9 @@ pip install -e .
 ## Usage
 
 ```python
+import kratix_sdk as ks
+import yaml
+
 # Initialize the sdk
 sdk = ks.KratixSDK()
 resource = sdk.read_resource_input()
