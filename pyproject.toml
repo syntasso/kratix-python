@@ -18,6 +18,6 @@ kubernetes = ">=33.0.0,<34"
 PyYAML = ">=6.0.0,<7"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.4.1"
-ruff = "0.12.11"
+pytest = "8.4.2"
+ruff = "0.12.12"
 pdoc = "^15"
