@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.2.0](https://github.com/syntasso/kratix-python/compare/v0.1.0...v0.2.0) (2025-09-16)
+
+
+### Features
+
+* get_value can take a default argument ([8a0a894](https://github.com/syntasso/kratix-python/commit/8a0a894d883c178a6b45af709c66391311648198))
+* get_value can take a default argument ([9485826](https://github.com/syntasso/kratix-python/commit/9485826c7758a50bad2ae8597ac3f6ccfccf43f5))
+
+
+### Bug Fixes
+
+* add imports to readme ([291ed32](https://github.com/syntasso/kratix-python/commit/291ed3208a6e51c75bfdaed47a3d4e56d39f02fe))
+
+
+### Documentation
+
+* improve function documentation ([914cfce](https://github.com/syntasso/kratix-python/commit/914cfce4f84bcf5609f1a6fca22084fb8a6b1c8d))
+
 ## 0.1.0 (2025-08-13)
 
 
