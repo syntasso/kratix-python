@@ -1,0 +1,6 @@
+apiVersion: demo.kratix.io/v1beta1
+kind: Database
+metadata:
+  name: example-database
+spec:
+  size: "1Gi"
