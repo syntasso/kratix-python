@@ -14,7 +14,7 @@ packages = [{include = "kratix_sdk"}]
 
 [tool.poetry.dependencies]
 python = ">=3.9"
-kubernetes = ">=33.0.0,<34"
+kubernetes = ">=33.0.0,<35"
 PyYAML = ">=6.0.0,<7"
 
 [tool.poetry.group.dev.dependencies]
