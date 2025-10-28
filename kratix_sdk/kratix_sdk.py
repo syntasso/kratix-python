@@ -153,3 +153,20 @@ class KratixSDK:
             name=name,
             body=body,
         )
+
+
+    def is_promise_workflow(self) -> bool:
+        """Returns true if the workflow is a promise workflow."""
+        return self.workflow_type() == "promise"
+
+    def is_resource_workflow(self) -> bool:
+        """Returns true if the workflow is a resource workflow."""
+        return self.workflow_type() == "resource"
+
+    def is_configure_action(self) -> bool:
+        """Returns true if the workflow is a configure action."""
+        return self.workflow_action() == "configure"
+
+    def is_delete_action(self) -> bool:
+        """Returns true if the workflow is a delete action."""
+        return self.workflow_action() == "delete"
