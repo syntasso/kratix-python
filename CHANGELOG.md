@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.3.0](https://github.com/syntasso/kratix-python/compare/v0.2.0...v0.3.0) (2025-10-29)
+
+
+### Features
+
+* add new workflow helper functions ([1dabc2b](https://github.com/syntasso/kratix-python/commit/1dabc2b2f882cd675483573bc74cfddef1fcc851))
+* add new workflow helper functions ([532e3df](https://github.com/syntasso/kratix-python/commit/532e3dfd2200bec9a9713cea7153fcad7f594c3c))
+
+
+### Documentation
+
+* add postgres example promise ([#18](https://github.com/syntasso/kratix-python/issues/18)) ([9d475f2](https://github.com/syntasso/kratix-python/commit/9d475f2aa2352b920e614c0f403ff87dd329a365))
+
 ## [0.2.0](https://github.com/syntasso/kratix-python/compare/v0.1.0...v0.2.0) (2025-09-16)
 
 
