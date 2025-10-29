@@ -173,6 +173,18 @@
                         <li>
                                 <a class="function" href="#KratixSDK.publish_status">publish_status</a>
                         </li>
+                        <li>
+                                <a class="function" href="#KratixSDK.is_promise_workflow">is_promise_workflow</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#KratixSDK.is_resource_workflow">is_resource_workflow</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#KratixSDK.is_configure_action">is_configure_action</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#KratixSDK.is_delete_action">is_delete_action</a>
+                        </li>
                 </ul>
 
             </li>
@@ -1067,6 +1079,23 @@ If path is provided, return the value at that path.</p>
 </span><span id="KratixSDK-154"><a href="#KratixSDK-154"><span class="linenos">154</span></a>            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
 </span><span id="KratixSDK-155"><a href="#KratixSDK-155"><span class="linenos">155</span></a>            <span class="n">body</span><span class="o">=</span><span class="n">body</span><span class="p">,</span>
 </span><span id="KratixSDK-156"><a href="#KratixSDK-156"><span class="linenos">156</span></a>        <span class="p">)</span>
+</span><span id="KratixSDK-157"><a href="#KratixSDK-157"><span class="linenos">157</span></a>
+</span><span id="KratixSDK-158"><a href="#KratixSDK-158"><span class="linenos">158</span></a>
+</span><span id="KratixSDK-159"><a href="#KratixSDK-159"><span class="linenos">159</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_promise_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK-160"><a href="#KratixSDK-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a promise workflow.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK-161"><a href="#KratixSDK-161"><span class="linenos">161</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;promise&quot;</span>
+</span><span id="KratixSDK-162"><a href="#KratixSDK-162"><span class="linenos">162</span></a>
+</span><span id="KratixSDK-163"><a href="#KratixSDK-163"><span class="linenos">163</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_resource_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK-164"><a href="#KratixSDK-164"><span class="linenos">164</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a resource workflow.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK-165"><a href="#KratixSDK-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;resource&quot;</span>
+</span><span id="KratixSDK-166"><a href="#KratixSDK-166"><span class="linenos">166</span></a>
+</span><span id="KratixSDK-167"><a href="#KratixSDK-167"><span class="linenos">167</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_configure_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK-168"><a href="#KratixSDK-168"><span class="linenos">168</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a configure action.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK-169"><a href="#KratixSDK-169"><span class="linenos">169</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_action</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;configure&quot;</span>
+</span><span id="KratixSDK-170"><a href="#KratixSDK-170"><span class="linenos">170</span></a>
+</span><span id="KratixSDK-171"><a href="#KratixSDK-171"><span class="linenos">171</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_delete_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK-172"><a href="#KratixSDK-172"><span class="linenos">172</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a delete action.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK-173"><a href="#KratixSDK-173"><span class="linenos">173</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_action</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;delete&quot;</span>
 </span></pre></div>
 
 
@@ -1401,6 +1430,94 @@ Can be used in Promise configure workflow.</p>
             <div class="docstring"><p>Updates the status of a Resource.
 This function uses the Kubernetes API to patch the status of a Custom Resource.
 Update is instant and will not change the /kratix/metadata/status.yaml file.</p>
+</div>
+
+
+                            </div>
+                            <div id="KratixSDK.is_promise_workflow" class="classattr">
+                                        <input id="KratixSDK.is_promise_workflow-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_promise_workflow</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+                <label class="view-source-button" for="KratixSDK.is_promise_workflow-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#KratixSDK.is_promise_workflow"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="KratixSDK.is_promise_workflow-159"><a href="#KratixSDK.is_promise_workflow-159"><span class="linenos">159</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_promise_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK.is_promise_workflow-160"><a href="#KratixSDK.is_promise_workflow-160"><span class="linenos">160</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a promise workflow.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK.is_promise_workflow-161"><a href="#KratixSDK.is_promise_workflow-161"><span class="linenos">161</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;promise&quot;</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Returns true if the workflow is a promise workflow.</p>
+</div>
+
+
+                            </div>
+                            <div id="KratixSDK.is_resource_workflow" class="classattr">
+                                        <input id="KratixSDK.is_resource_workflow-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_resource_workflow</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+                <label class="view-source-button" for="KratixSDK.is_resource_workflow-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#KratixSDK.is_resource_workflow"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="KratixSDK.is_resource_workflow-163"><a href="#KratixSDK.is_resource_workflow-163"><span class="linenos">163</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_resource_workflow</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK.is_resource_workflow-164"><a href="#KratixSDK.is_resource_workflow-164"><span class="linenos">164</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a resource workflow.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK.is_resource_workflow-165"><a href="#KratixSDK.is_resource_workflow-165"><span class="linenos">165</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_type</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;resource&quot;</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Returns true if the workflow is a resource workflow.</p>
+</div>
+
+
+                            </div>
+                            <div id="KratixSDK.is_configure_action" class="classattr">
+                                        <input id="KratixSDK.is_configure_action-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_configure_action</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+                <label class="view-source-button" for="KratixSDK.is_configure_action-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#KratixSDK.is_configure_action"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="KratixSDK.is_configure_action-167"><a href="#KratixSDK.is_configure_action-167"><span class="linenos">167</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_configure_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK.is_configure_action-168"><a href="#KratixSDK.is_configure_action-168"><span class="linenos">168</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a configure action.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK.is_configure_action-169"><a href="#KratixSDK.is_configure_action-169"><span class="linenos">169</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_action</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;configure&quot;</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Returns true if the workflow is a configure action.</p>
+</div>
+
+
+                            </div>
+                            <div id="KratixSDK.is_delete_action" class="classattr">
+                                        <input id="KratixSDK.is_delete_action-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">is_delete_action</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span></span><span class="return-annotation">) -> <span class="nb">bool</span>:</span></span>
+
+                <label class="view-source-button" for="KratixSDK.is_delete_action-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#KratixSDK.is_delete_action"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="KratixSDK.is_delete_action-171"><a href="#KratixSDK.is_delete_action-171"><span class="linenos">171</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">is_delete_action</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+</span><span id="KratixSDK.is_delete_action-172"><a href="#KratixSDK.is_delete_action-172"><span class="linenos">172</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns true if the workflow is a delete action.&quot;&quot;&quot;</span>
+</span><span id="KratixSDK.is_delete_action-173"><a href="#KratixSDK.is_delete_action-173"><span class="linenos">173</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">workflow_action</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;delete&quot;</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Returns true if the workflow is a delete action.</p>
 </div>
 
 
