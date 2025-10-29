@@ -195,6 +195,46 @@ def test_env_vars_exposed(monkeypatch):
     assert sdk.pipeline_name() == "configure-database"
 
 
+def test_is_promise_workflow(monkeypatch):
+    sdk = ks.KratixSDK()
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_TYPE", "promise")
+    assert sdk.is_promise_workflow() is True
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_TYPE", "resource")
+    assert sdk.is_promise_workflow() is False
+
+
+def test_is_resource_workflow(monkeypatch):
+    sdk = ks.KratixSDK()
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_TYPE", "resource")
+    assert sdk.is_resource_workflow() is True
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_TYPE", "promise")
+    assert sdk.is_resource_workflow() is False
+
+
+def test_is_configure_action(monkeypatch):
+    sdk = ks.KratixSDK()
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_ACTION", "configure")
+    assert sdk.is_configure_action() is True
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_ACTION", "delete")
+    assert sdk.is_configure_action() is False
+
+
+def test_is_delete_action(monkeypatch):
+    sdk = ks.KratixSDK()
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_ACTION", "delete")
+    assert sdk.is_delete_action() is True
+
+    monkeypatch.setenv("KRATIX_WORKFLOW_ACTION", "configure")
+    assert sdk.is_delete_action() is False
+
+
 # ---------- Write to Output Tests ----------
 
 
