@@ -154,7 +154,6 @@ class KratixSDK:
             body=body,
         )
 
-
     def is_promise_workflow(self) -> bool:
         """Returns true if the workflow is a promise workflow."""
         return self.workflow_type() == "promise"

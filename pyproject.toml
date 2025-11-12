@@ -7,10 +7,32 @@ name = "kratix-sdk"
 version = "0.3.0"
 description = "Kratix SDK for writing Promises workflows"
 readme = "Readme.md"
+authors = ["Syntasso <hello@syntasso.io>"]
 license = "Apache-2.0"
 homepage = "https://github.com/syntasso/kratix-python"
 repository = "https://github.com/syntasso/kratix-python"
+documentation = "https://syntasso.github.io/kratix-python"
+keywords = ["kratix", "platform-engineering", "promises", "sdk"]
 packages = [{include = "kratix_sdk"}]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Utilities",
+]
+
+[tool.poetry.urls]
+"Source" = "https://github.com/syntasso/kratix-python"
+"Documentation" = "https://syntasso.github.io/kratix-python"
+"Bug Tracker" = "https://github.com/syntasso/kratix-python/issues"
+"Changelog" = "https://github.com/syntasso/kratix-python/blob/main/CHANGELOG.md"
 
 [tool.poetry.dependencies]
 python = ">=3.9"
