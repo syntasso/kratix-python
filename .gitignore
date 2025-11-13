@@ -8,3 +8,4 @@ __pycache__/
 .idea/
 .vscode/
 tests/__pycache__/
+dist/
