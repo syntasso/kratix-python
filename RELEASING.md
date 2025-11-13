@@ -2,19 +2,29 @@
 
 This document captures the steps for cutting a new version of the SDK and publishing it to PyPI.
 
-1. **Prep the repo**
+1. **Set up Poetry credentials (one-time per machine)**
+   ```bash
+   poetry config repositories.testpypi https://test.pypi.org/legacy/
+   # Use a TestPyPI API token copied from https://test.pypi.org/manage/account/token/
+   poetry config pypi-token.testpypi <TESTPYPI_API_TOKEN>
+   # For the main PyPI token (if not already configured)
+   poetry config pypi-token.pypi <PYPI_API_TOKEN>
+   ```
+   Alternatively export `POETRY_HTTP_BASIC_TESTPYPI_USERNAME="__token__"` and `POETRY_HTTP_BASIC_TESTPYPI_PASSWORD="<token>"` before publishing.
+
+2. **Prep the repo**
    - Update `pyproject.toml` with the new version under `[tool.poetry]`.
    - Add an entry to `CHANGELOG.md` summarising the release and changes.
    - Commit your work before building artifacts.
 
-2. **Run quality checks**
+3. **Run quality checks**
    ```bash
    make install          # installs dependencies
    make fmt && make lint # optional but recommended
    make test             # run pytest
    ```
 
-3. **Build distributions**
+4. **Build distributions**
    ```bash
    poetry build
    ls dist/              # verify the wheel and sdist exist
@@ -22,7 +32,7 @@ This document captures the steps for cutting a new version of the SDK and publis
    ```
    Inspect the contents to ensure only expected files are included.
 
-4. **Publish to TestPyPI (recommended)**
+5. **Publish to TestPyPI (recommended)**
    ```bash
    poetry publish --repository testpypi --build
    python -m venv /tmp/kratix-sdk-test
@@ -31,7 +41,7 @@ This document captures the steps for cutting a new version of the SDK and publis
    ```
    Run a quick smoke test (`python -c "import kratix_sdk; print(kratix_sdk.__version__)"`) to ensure the build works.
 
-5. **Publish to PyPI**
+6. **Publish to PyPI**
    ```bash
    poetry publish --build
    git tag v<version>
@@ -39,7 +49,6 @@ This document captures the steps for cutting a new version of the SDK and publis
    ```
    PyPI credentials/API token must be configured in `~/.pypirc` beforehand.
 
-6. **Communicate the release**
+7. **Communicate the release**
    - Share release notes on the relevant channels.
    - Update downstream sample projects if they pin versions.
-

@@ -1,6 +1,6 @@
 # kratix-python
 
-You can read library document [here](https://syntasso.github.io/kratix-python).
+Library documentation can be found [here](https://syntasso.github.io/kratix-python).
 
 ## Installation
 
