@@ -17,7 +17,7 @@ from .types import GroupVersionKind, DestinationSelector
 try:
     __version__ = importlib_metadata.version("kratix-sdk")
 except importlib_metadata.PackageNotFoundError:  # pragma: no cover - source tree fallback
-    __version__ = "0.0.0"
+    __version__ = "0.4.0"
 
 __all__ = [
     "Status",
