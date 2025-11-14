@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/syntasso/kratix-python/compare/v0.3.0...v0.4.0) (2025-11-14)
+
+
+### Features
+
+* new pypi release and documentation ([cd23bae](https://github.com/syntasso/kratix-python/commit/cd23bae34d5a9cc03faf91b519beeb6b5ef4e831))
+* new pypi release and documentation ([c062400](https://github.com/syntasso/kratix-python/commit/c0624008268a279a5d851dd444ba503a2d2e5c20))
+
 ## [0.3.0](https://github.com/syntasso/kratix-python/compare/v0.2.0...v0.3.0) (2025-10-29)
 
 
