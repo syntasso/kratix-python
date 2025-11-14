@@ -13,9 +13,10 @@ This document captures the steps for cutting a new version of the SDK and publis
    Alternatively export `POETRY_HTTP_BASIC_TESTPYPI_USERNAME="__token__"` and `POETRY_HTTP_BASIC_TESTPYPI_PASSWORD="<token>"` before publishing.
 
 2. **Prep the repo**
-   - Update `pyproject.toml` with the new version under `[tool.poetry]`.
-   - Add an entry to `CHANGELOG.md` summarising the release and changes.
-   - Commit your work before building artifacts.
+   - Prior to pypi release, release-please has to manage / generate a new version number.
+   - All commits should be merged to `main`.
+   - Once release-please has created a PR, merge it to `main` with the new version number in `pyproject.toml` .
+   - Pull down the latest `main` branch.
 
 3. **Run quality checks**
    ```bash
