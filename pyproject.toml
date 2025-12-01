@@ -40,5 +40,5 @@ PyYAML = ">=6.0.0,<7"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "9.0.1"
-ruff = "0.14.6"
+ruff = "0.14.7"
 pdoc = "^15"
