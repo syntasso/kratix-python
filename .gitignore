@@ -9,3 +9,4 @@ __pycache__/
 .vscode/
 tests/__pycache__/
 dist/
+docs/

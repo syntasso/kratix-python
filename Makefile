@@ -1,19 +1,20 @@
 .PHONY: test lint fmt clean install
 
 install: # install dependencies for running tests and linting
-	poetry install
+	uv sync --dev
 
 test:
-	poetry run pytest
+	uv run pytest
 
 lint:
-	poetry run ruff check kratix_sdk tests
+	uv run ruff check kratix_sdk tests
+	uv run ruff format --check kratix_sdk tests
 
 fmt:
-	poetry run ruff format kratix_sdk tests
+	uv run ruff format kratix_sdk tests
 
 generate-docs:
-	poetry run pdoc src/kratix_sdk -o docs
+	uv run pdoc src/kratix_sdk -o docs
 
 build-and-load-configure-image:
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \
