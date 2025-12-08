@@ -24,7 +24,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
-          enable-cache: true          
+          enable-cache: true
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
       - name: Install dependencies
@@ -33,6 +33,8 @@ jobs:
         run: make install lint
       - name: Tests
         run: make test
+        env:
+          UV_PYTHON: ${{ matrix.python-version }}
 
   release-please:
     name: Create Release PR

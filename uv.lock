@@ -203,7 +203,7 @@ dev = [
 requires-dist = [
     { name = "kubernetes", specifier = ">=33.0.0,<35" },
     { name = "pdoc", marker = "extra == 'dev'", specifier = ">=15.0.0" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=0.0.2" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=9.0.2" },
     { name = "pyyaml", specifier = ">=6.0.0,<7" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.14.8" },
 ]

@@ -1,16 +1,18 @@
+UV_PYTHON ?= 3.12
+
 .PHONY: test lint fmt clean install
 
 install: # install dependencies for running tests and linting
-	uv sync --dev
+	uv sync --extra dev
 
 test:
-	uv run pytest
+	uv run --isolated --with-editable '.[dev]' pytest
 
-lint:
+lint: install
 	uv run ruff check kratix_sdk tests
 	uv run ruff format --check kratix_sdk tests
 
-fmt:
+fmt: install
 	uv run ruff format kratix_sdk tests
 
 generate-docs:

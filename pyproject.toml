@@ -37,7 +37,11 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
-dev = ["pytest>=0.0.2", "ruff>=0.14.8", "pdoc>=15.0.0",]
+dev = [
+ "ruff>=0.14.8",
+ "pdoc>=15.0.0",
+ "pytest>=9.0.2",
+]
 
 [project.scripts]
 kratix-sdk = "kratix_sdk:main"
