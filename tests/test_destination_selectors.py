@@ -1,5 +1,6 @@
-import yaml
 from pathlib import Path
+
+import yaml
 
 import kratix_sdk as ks
 

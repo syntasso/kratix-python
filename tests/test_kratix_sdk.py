@@ -1,9 +1,9 @@
-import yaml
-import pytest
 from pathlib import Path
 
-import kratix_sdk as ks
+import pytest
+import yaml
 
+import kratix_sdk as ks
 
 # ---------- Helpers ----------
 
