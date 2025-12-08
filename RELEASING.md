@@ -1,55 +1,34 @@
 # Releasing `kratix-sdk`
 
-This document captures the steps for cutting a new version of the SDK and publishing it to PyPI.
+The release process for this repository is almost entirely automated, consisting
+of these steps:
 
-1. **Set up Poetry credentials (one-time per machine)**
-   ```bash
-   poetry config repositories.testpypi https://test.pypi.org/legacy/
-   # Use a TestPyPI API token copied from https://test.pypi.org/manage/account/token/
-   poetry config pypi-token.testpypi <TESTPYPI_API_TOKEN>
-   # For the main PyPI token (if not already configured)
-   poetry config pypi-token.pypi <PYPI_API_TOKEN>
-   ```
-   Alternatively export `POETRY_HTTP_BASIC_TESTPYPI_USERNAME="__token__"` and `POETRY_HTTP_BASIC_TESTPYPI_PASSWORD="<token>"` before publishing.
+1. **Run quality checks (unit tests and linting)** (automated)
 
-2. **Prep the repo**
-   - Prior to pypi release, release-please has to manage / generate a new version number.
-   - All commits should be merged to `main`.
-   - Once release-please has created a PR, merge it to `main` with the new version number in `pyproject.toml` .
-   - Pull down the latest `main` branch.
+Every PR and every merge to `main` will trigger the testing workflow. This
+workflow checks for successful unit test runs and whether the linting and
+formatting rules are being respected.
 
-3. **Run quality checks**
-   ```bash
-   make install          # installs dependencies
-   make fmt && make lint # optional but recommended
-   make test             # run pytest
-   ```
+1. **Prepare the release PR** (automated)
 
-4. **Build distributions**
-   ```bash
-   poetry build
-   ls dist/              # verify the wheel and sdist exist
-   tar tf dist/kratix-sdk-<version>.tar.gz | head
-   ```
-   Inspect the contents to ensure only expected files are included.
+`release-please` will prepare a release PR for this project after each each
+successful run of the of the quality checks in the `main` branch.
 
-5. **Publish to TestPyPI (recommended)**
-   ```bash
-   poetry publish --repository testpypi --build
-   python -m venv /tmp/kratix-sdk-test
-   source /tmp/kratix-sdk-test/bin/activate
-   pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple kratix-sdk==<version>
-   ```
-   Run a quick smoke test (`python -c "import kratix_sdk; print(kratix_sdk.__version__)"`) to ensure the build works.
+1. **Merge the release PR** (manual)
 
-6. **Publish to PyPI**
-   ```bash
-   poetry publish --build
-   git tag v<version>
-   git push origin main --tags
-   ```
-   PyPI credentials/API token must be configured in `~/.pypirc` beforehand.
+A maintainer decided whether the release PR created by `release-please` should
+be merged. If a release PR is merged, `release-please` will update the
+[CHANGELOG](CHANGELOG.md) and create a new Github Release with notes.
 
-7. **Communicate the release**
-   - Share release notes on the relevant channels.
-   - Update downstream sample projects if they pin versions.
+1. **Publish repositories to PyPI** (automated)
+
+When a release is created, the publish workflow will package the code onto a
+new release and push this release as a new package on PyPI. If the package is
+published successfully, it will publish the API documentation to the
+[documentation website](https://syntasso.github.io/kratix-python/).
+
+1. **Communicate the release** (manual)
+
+After all artifacts are published, a human needs to:
+- Share release notes on the relevant channels.
+- Update downstream sample projects if they pin versions.
