@@ -2,7 +2,7 @@
 name = "kratix-sdk"
 version = "0.4.0"
 description = "Kratix SDK for writing Promises workflows"
-readme = "Readme.md"
+readme = "README.md"
 authors = [{name = "Syntasso", email="hello@syntasso.io"}]
 license = "Apache-2.0"
 keywords = ["kratix", "platform-engineering", "promises", "sdk"]
