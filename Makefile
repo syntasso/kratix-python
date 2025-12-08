@@ -6,7 +6,7 @@ help: # Show help for each of the Makefile recipes.
 	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;34m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
 
 install: # install dependencies for running tests and linting
-	uv install python
+	uv python install
 	uv sync --extra dev
 
 test: install # run tests
