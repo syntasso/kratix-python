@@ -39,6 +39,6 @@ kubernetes = ">=33.0.0,<35"
 PyYAML = ">=6.0.0,<7"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "9.0.1"
-ruff = "0.14.7"
+pytest = "9.0.2"
+ruff = "0.14.8"
 pdoc = "^15"
