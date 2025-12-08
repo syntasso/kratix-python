@@ -42,6 +42,13 @@
           "section": "Documentation",
           "hidden": false
         }
+      ],
+      "extra-files": [
+        {
+          "path": "uv.lock",
+          "type": "toml",
+          "jsonpath": "$.package[?(@.name.value=='kratix-sdk')].version"
+        }
       ]
     }
   },
