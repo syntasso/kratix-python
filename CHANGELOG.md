@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/syntasso/kratix-python/compare/v0.4.1...v0.4.2) (2025-12-09)
+
+
+### Chores
+
+* evaluate to false when no input is passed ([b1a58fa](https://github.com/syntasso/kratix-python/commit/b1a58fa8abcb99605ca70bed8ea6583a34bc4c28))
+
 ## [0.4.1](https://github.com/syntasso/kratix-python/compare/v0.4.0...v0.4.1) (2025-12-09)
 
 
