@@ -35,7 +35,7 @@ jobs:
         run: make generate-docs
 
       - name: Publish release docs to test location
-        if: ${{ github.event.inputs.is_test == 'true' }}
+        if: ${{ (github.event.inputs.is_test || 'false') == 'true' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
           destination_dir: rc/${{ github.event.release.tag_name }}
 
       - name: Publish release docs to production location
-        if: ${{ github.event.inputs.is_test == 'false' }}
+        if: ${{ (github.event.inputs.is_test || 'false') == 'false' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

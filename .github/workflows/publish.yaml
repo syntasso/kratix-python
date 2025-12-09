@@ -34,10 +34,10 @@ jobs:
         run: make build
 
       - name: Publish packages to PyPI Test
-        if: ${{ github.event.inputs.is_test == 'true' }}
+        if: ${{ (github.event.inputs.is_test || 'false') == 'true' }}
         run: |
           uv publish --index testpypi --token ${{ secrets.TEST_PYPI_TOKEN }}
 
       - name: Publish release packages to PyPI
-        if: ${{ github.event.inputs.is_test == 'false' }}
+        if: ${{ (github.event.inputs.is_test || 'false') == 'false' }}
         run: uv publish --token ${{ secrets.PYPI_TOKEN }}
