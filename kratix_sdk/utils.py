@@ -1,7 +1,7 @@
-from typing import Any, Dict
+from typing import Any
 
 
-def _get_by_path(data: Dict[str, Any], path: str, **kwargs) -> Any:
+def _get_by_path(data: dict[str, Any], path: str, **kwargs) -> Any:
     has_default_key = "default" in kwargs
 
     current = data
@@ -18,7 +18,7 @@ def _get_by_path(data: Dict[str, Any], path: str, **kwargs) -> Any:
     return current
 
 
-def _set_by_path(data: Dict[str, Any], path: str, value: Any) -> None:
+def _set_by_path(data: dict[str, Any], path: str, value: Any) -> None:
     if not path:
         raise ValueError("Empty path")
 
@@ -42,7 +42,7 @@ def _set_by_path(data: Dict[str, Any], path: str, value: Any) -> None:
     current[keys[-1]] = value
 
 
-def _remove_by_path(data: Dict[str, Any], path: str) -> None:
+def _remove_by_path(data: dict[str, Any], path: str) -> None:
     if not path:
         raise ValueError("Empty path")
 

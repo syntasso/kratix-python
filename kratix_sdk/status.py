@@ -1,10 +1,11 @@
-from typing import Any, Dict, Optional
-from .utils import _get_by_path, _set_by_path, _remove_by_path
+from typing import Any
+
+from .utils import _get_by_path, _remove_by_path, _set_by_path
 
 
 class Status:
-    def __init__(self, data: Optional[Dict[str, Any]] = None):
-        self.data: Dict[str, Any] = data or {}
+    def __init__(self, data: dict[str, Any] | None = None):
+        self.data: dict[str, Any] = data or {}
 
     def get(self, path: str) -> Any:
         """Retrieves the value at the specified path in Status."""
@@ -19,5 +20,5 @@ class Status:
         If the path does not exist, it retursn an error."""
         _remove_by_path(self.data, path)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return self.data

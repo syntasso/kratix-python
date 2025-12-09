@@ -1,12 +1,14 @@
 import os
-import yaml
 from pathlib import Path
-from typing import List
-from kubernetes import client as k8s_client, config as k8s_config
-from .resource import Resource
-from .types import DestinationSelector
-from .status import Status
+
+import yaml
+from kubernetes import client as k8s_client
+from kubernetes import config as k8s_config
+
 from .promise import Promise
+from .resource import Resource
+from .status import Status
+from .types import DestinationSelector
 
 INPUT_DIR = Path("/kratix/input")
 OUTPUT_DIR = Path("/kratix/output")
@@ -64,8 +66,9 @@ class KratixSDK:
             data = yaml.safe_load(f) or {}
         return Status(data)
 
-    def read_destination_selectors(self) -> List[DestinationSelector]:
-        """Reads the file in /kratix/metadata/destination-selectors.yaml and returns a list of DestinationSelector"""
+    def read_destination_selectors(self) -> list[DestinationSelector]:
+        """Reads the file in /kratix/metadata/destination-selectors.yaml and
+        returns a list of DestinationSelector"""
         path = METADATA_DIR / "destination-selectors.yaml"
         with path.open() as f:
             raw = yaml.safe_load(f) or []
@@ -79,7 +82,8 @@ class KratixSDK:
         return selectors
 
     def write_output(self, relative_path: str, content: bytes) -> None:
-        """writes the content to the specifies file at the path /kratix/output/relative_path."""
+        """writes the content to the specifies file at the path
+        /kratix/output/relative_path."""
         dest = OUTPUT_DIR / relative_path
         dest.parent.mkdir(parents=True, exist_ok=True)
         with dest.open("wb") as f:
@@ -92,8 +96,9 @@ class KratixSDK:
         with path.open("w") as f:
             yaml.safe_dump(status.to_dict(), f)
 
-    def write_destination_selectors(self, selectors: List[DestinationSelector]) -> None:
-        """writes the specified Destination Selectors to the /kratix/metadata/destination_selectors.yaml."""
+    def write_destination_selectors(self, selectors: list[DestinationSelector]) -> None:
+        """writes the specified Destination Selectors to the
+        /kratix/metadata/destination_selectors.yaml."""
         path = METADATA_DIR / "destination-selectors.yaml"
         data = []
         for s in selectors:

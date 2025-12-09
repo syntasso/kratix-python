@@ -1,11 +1,12 @@
-from typing import Any, Dict
-from .utils import _get_by_path
+from typing import Any
+
 from .status import Status
 from .types import GroupVersionKind
+from .utils import _get_by_path
 
 
 class Resource:
-    def __init__(self, data: Dict[str, Any]):
+    def __init__(self, data: dict[str, Any]):
         self.data = data
 
     def get_value(self, path: str, **kwargs) -> Any:
@@ -52,10 +53,10 @@ class Resource:
         kind = self.data.get("kind", "")
         return GroupVersionKind(group=group, version=version, kind=kind)
 
-    def get_labels(self) -> Dict[str, str]:
+    def get_labels(self) -> dict[str, str]:
         """Get the labels of the resource."""
         return self.data.get("metadata", {}).get("labels", {})
 
-    def get_annotations(self) -> Dict[str, str]:
+    def get_annotations(self) -> dict[str, str]:
         """Get the annotations of the resource."""
         return self.data.get("metadata", {}).get("annotations", {})

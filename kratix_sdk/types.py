@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import Dict, Any
+from typing import Any
 
 
 @dataclass
@@ -12,4 +12,4 @@ class GroupVersionKind:
 @dataclass
 class DestinationSelector:
     directory: str = ""
-    match_labels: Dict[str, Any] = field(default_factory=dict)
+    match_labels: dict[str, Any] = field(default_factory=dict)
