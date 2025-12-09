@@ -1,5 +1,42 @@
 # Changelog
 
+## [0.4.1](https://github.com/syntasso/kratix-python/compare/v0.4.0...v0.4.1) (2025-12-09)
+
+
+### Chores
+
+* added the rest of the current python versions ([cbe1757](https://github.com/syntasso/kratix-python/commit/cbe17579dbf381b2d739330342ad843d4274f5be))
+* allowed testing with multiple python versions ([030d314](https://github.com/syntasso/kratix-python/commit/030d314bbf118810e6ab63bd5416c0d6a559200c))
+* asking release-please to consider the uv lockfile for releases ([c6efab1](https://github.com/syntasso/kratix-python/commit/c6efab11073396fc1cebac4964c847c85ec98e70))
+* autoformatting ([f185c28](https://github.com/syntasso/kratix-python/commit/f185c28b200122eb1016ecfb934bcb4ae088942e))
+* automate package publishing process with uv ([33081a5](https://github.com/syntasso/kratix-python/commit/33081a5bb5e0fefcd646d4e2d5d9258ff3c38aba))
+* fixed install command ([9075d3a](https://github.com/syntasso/kratix-python/commit/9075d3af29ae2623b798bc41aa71476157b551ff))
+* fixed typo ([29cf53f](https://github.com/syntasso/kratix-python/commit/29cf53f43ec8ede2c198c5ffa7e66850f0b1d420))
+* fixed version in matrix ([23c9378](https://github.com/syntasso/kratix-python/commit/23c9378a6fcecbe4ac9e5794d4af1b2c3de6ecd0))
+* make linting happy ([f559322](https://github.com/syntasso/kratix-python/commit/f55932241c9efa0fc85463465a37473adc4fcae6))
+* pin version for 3.12 for development ([94c2e50](https://github.com/syntasso/kratix-python/commit/94c2e50eeb42aeb307fe29e204bae4156e7be5a8))
+* pin version for 3.12 for development ([e357c4b](https://github.com/syntasso/kratix-python/commit/e357c4beaf1a5c3d00b8d8d6fbdc5444a3681950))
+* publish RC packages to non-production locations ([168a2e5](https://github.com/syntasso/kratix-python/commit/168a2e5e63b62944a2463efe1d05ff3d2a0f21da))
+* release process change ([89fa7e3](https://github.com/syntasso/kratix-python/commit/89fa7e3169db7bfec9a7c2a080e9b7a5e2b46611))
+* removed standalone script pointer ([892f8ac](https://github.com/syntasso/kratix-python/commit/892f8acad7702ae16048e98f81281c176ff13224))
+* renamed README ([caf5c47](https://github.com/syntasso/kratix-python/commit/caf5c47d2e4ed26d58d4c6670f7a63150a32dc8e))
+* renaming readme ([65553b3](https://github.com/syntasso/kratix-python/commit/65553b3206a0e6d2a88c1fe9d6e80a0432bf294f))
+* support for prereleases ([fbae14d](https://github.com/syntasso/kratix-python/commit/fbae14d29c2a462f901a1aff599fd785d2345147))
+* switch from poetry to uv ([28101f2](https://github.com/syntasso/kratix-python/commit/28101f23a3fd64c1d4daf7527b857d5758e3fbce))
+* switched make and workflows to uv ([33849d1](https://github.com/syntasso/kratix-python/commit/33849d1c9ac14b3384499cff378c9ed206fae180))
+* updated release process and makefile ([b1b8cc9](https://github.com/syntasso/kratix-python/commit/b1b8cc9a97a9ef949cbcb4e9c31a14aba3fd3286))
+
+
+### Build System
+
+* **deps-dev:** bump pytest from 8.4.2 to 9.0.1 ([#36](https://github.com/syntasso/kratix-python/issues/36)) ([b67cedc](https://github.com/syntasso/kratix-python/commit/b67cedc0106b3224e8cc0b4e41cbf2a83cb09b0e))
+* **deps-dev:** bump ruff from 0.14.4 to 0.14.5 in the minor-and-patch group ([6ab771e](https://github.com/syntasso/kratix-python/commit/6ab771e5fb2a75641e34aad280db1032c5aaa130))
+* **deps-dev:** bump ruff from 0.14.5 to 0.14.6 in the minor-and-patch group ([df0a897](https://github.com/syntasso/kratix-python/commit/df0a89746065f55e3c7b0f417294ada86b4a5053))
+* **deps-dev:** bump ruff in the minor-and-patch group ([1c9d4cf](https://github.com/syntasso/kratix-python/commit/1c9d4cfd22a9c328630f5edcb5ddedd5532bf24e))
+* **deps-dev:** bump ruff in the minor-and-patch group ([14539ba](https://github.com/syntasso/kratix-python/commit/14539ba46554b157c3441fd099d62425e8383f34))
+* **deps-dev:** bump ruff in the minor-and-patch group ([#38](https://github.com/syntasso/kratix-python/issues/38)) ([dbd444c](https://github.com/syntasso/kratix-python/commit/dbd444cc310afb1167a7344f4c70c1111282e810))
+* **deps-dev:** bump the minor-and-patch group with 2 updates ([#39](https://github.com/syntasso/kratix-python/issues/39)) ([198dc4e](https://github.com/syntasso/kratix-python/commit/198dc4e7a7740c85abacf8417bf2f874db670761))
+
 ## [0.4.0](https://github.com/syntasso/kratix-python/compare/v0.3.0...v0.4.0) (2025-11-14)
 
 
