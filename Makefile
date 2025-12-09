@@ -1,5 +1,3 @@
-UV_PYTHON ?= 3.12
-
 .PHONY: build help install test lint fmt generate-docs build-and-load-configure image build-and-load-system-test-image
 
 help: # Show help for each of the Makefile recipes.
