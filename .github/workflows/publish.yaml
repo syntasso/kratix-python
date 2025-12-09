@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       is_test:
-        description: 'Indicates that the run should publish to the test repositories'
+        description: 'Publish to test repositories instead of production'
         required: true
         type: boolean
         default: false
