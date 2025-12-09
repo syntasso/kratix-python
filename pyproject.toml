@@ -1,6 +1,6 @@
 [project]
 name = "kratix-sdk"
-version = "0.4.0"
+version = "0.4.1"
 description = "Kratix SDK for writing Promises workflows"
 readme = "README.md"
 authors = [{ name = "Syntasso", email = "hello@syntasso.io" }]
