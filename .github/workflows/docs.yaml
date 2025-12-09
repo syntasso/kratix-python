@@ -39,7 +39,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./publish
           # this puts the docs for this tag under gh-pages:/rc/<tag>/
           destination_dir: rc/${{ github.event.release.tag_name }}
 
@@ -48,4 +48,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
+          publish_dir: ./publish
