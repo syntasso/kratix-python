@@ -31,7 +31,6 @@ generate-docs: install dev # create API documentation
 	--favicon favicon.ico
 	cp -r docs/assets/* publish/
 
-
 build-and-load-configure-image: # build example docker image and load it into kind
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \
 	-t ghcr.io/syntasso/example-deployment-configure:v0.0.1 -f examples/deployment/Dockerfile .
