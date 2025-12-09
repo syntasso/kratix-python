@@ -23,7 +23,13 @@ fmt: install dev # run code formatter
 	uv run ruff format kratix_sdk tests
 
 generate-docs: install dev # create API documentation
-	uv run pdoc src/kratix_sdk -o docs
+	VERSION=$(shell python3 -c 'import json; print(*json.load(open(".release-please-manifest.json")).values(), end="")') \
+	uv run pdoc src/kratix_sdk \
+	--output-directory publish \
+	--template-directory docs/templates \
+	--logo logo.svg \
+	--favicon favicon.ico
+	cp -r docs/assets/* publish/
 
 build-and-load-configure-image: # build example docker image and load it into kind
 	docker buildx build --builder kratix-image-builder --load --platform linux/arm64 \

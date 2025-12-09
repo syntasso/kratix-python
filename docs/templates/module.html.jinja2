@@ -1,0 +1,7 @@
+{% extends "default/module.html.jinja2" %}
+{% block nav_footer %}
+    <footer>{{ module.modulename }} v{{ env["VERSION"] | default("snapshot") }}</footer>
+{% endblock %}
+{% block module_info %}
+    <h1 class="modulename">{{ module.modulename }} v{{ env["VERSION"] | default("dev") }}</h1>
+{% endblock %}
