@@ -43,9 +43,6 @@ dev = [
  "pytest>=9.0.2",
 ]
 
-[project.scripts]
-kratix-sdk = "kratix_sdk:main"
-
 [tool.ruff]
 target-version = "py313"
 line-length = 88
