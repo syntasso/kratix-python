@@ -3,6 +3,13 @@ name: "Publish package and documentation"
 on:
   release:
     types: ["published"]
+  workflow_dispatch:
+    inputs:
+      is_test:
+        description: 'Indicates that the run should publish to the test repositories'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   packages:
@@ -22,16 +29,16 @@ jobs:
         with:
           enable-cache: true
 
-      - name: Build
-        run: uv build
+      - name: Build package
+        run: make build
 
-      - name: Publish RC packages to PyPI Test
-        if: contains(github.event.release.tag_name, '-rc')
+      - name: Publish packages to PyPI Test
+        if: ${{ github.event.inputs.run_deploy == 'true' }}
         run: |
           uv publish --index testpypi --token ${{ secrets.TEST_PYPI_TOKEN }}
 
       - name: Publish release packages to PyPI
-        if: ${{ ! contains(github.event.release.tag_name, '-rc') }}
+        if: ${{ github.event.inputs.run_deploy == 'false' }}
         run: uv publish --token ${{ secrets.PYPI_TOKEN }}
 
   docs:
@@ -50,10 +57,10 @@ jobs:
           enable-cache: true
 
       - name: Generate docs
-        run: make install generate-docs
+        run: make generate-docs
 
-      - name: Publish RC docs
-        if: contains(github.event.release.tag_name, '-rc')
+      - name: Publish release docs to test location
+        if: ${{ github.event.inputs.run_deploy == 'true' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -61,8 +68,8 @@ jobs:
           # this puts the docs for this tag under gh-pages:/rc/<tag>/
           destination_dir: rc/${{ github.event.release.tag_name }}
 
-      - name: Publish release docs
-        if: ${{ ! contains(github.event.release.tag_name, '-rc') }}
+      - name: Publish release docs to production location
+        if: ${{ github.event.inputs.run_deploy == 'false' }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
