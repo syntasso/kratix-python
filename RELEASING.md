@@ -22,10 +22,13 @@ be merged. If a release PR is merged, `release-please` will update the
 
 1. **Publish repositories to PyPI** (automated)
 
-When a release is created, the publish workflow will package the code onto a
-new release and push this release as a new package on PyPI. If the package is
-published successfully, it will publish the API documentation to the
-[documentation website](https://syntasso.github.io/kratix-python/).
+When a release is created, the package publish workflow will package the code
+onto a new release and push this release as a new package on PyPI.
+
+1. **Publish API documents to Github Pages** (automated)
+
+After a package is published, the docs publish workflow will build the code and
+push it the [documentation website](https://syntasso.github.io/kratix-python/).
 
 1. **Communicate the release** (manual)
 

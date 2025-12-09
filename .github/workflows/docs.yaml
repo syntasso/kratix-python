@@ -1,0 +1,51 @@
+name: publish-docs
+
+on:
+  workflow_run:
+    workflows:
+      - publish-packages
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      is_test:
+        description: "Publish docs to test location"
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Generate docs
+        run: make generate-docs
+
+      - name: Publish release docs to test location
+        if: ${{ github.event.inputs.is_test == 'true' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          # this puts the docs for this tag under gh-pages:/rc/<tag>/
+          destination_dir: rc/${{ github.event.release.tag_name }}
+
+      - name: Publish release docs to production location
+        if: ${{ github.event.inputs.is_test == 'false' }}
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
