@@ -3,14 +3,11 @@ name = "kratix-sdk"
 version = "0.4.0"
 description = "Kratix SDK for writing Promises workflows"
 readme = "README.md"
-authors = [{name = "Syntasso", email="hello@syntasso.io"}]
+authors = [{ name = "Syntasso", email = "hello@syntasso.io" }]
 license = "Apache-2.0"
 keywords = ["kratix", "platform-engineering", "promises", "sdk"]
 requires-python = ">=3.10"
-dependencies = [
-    "kubernetes >=33.0.0,<35",
-    "PyYAML>=6.0.0,<7",
-]
+dependencies = ["kubernetes >=33.0.0,<35", "PyYAML>=6.0.0,<7"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -37,11 +34,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project.optional-dependencies]
-dev = [
- "ruff>=0.14.8",
- "pdoc>=15.0.0",
- "pytest>=9.0.2",
-]
+dev = ["ruff>=0.14.8", "pdoc>=15.0.0", "pytest>=9.0.2"]
 
 [tool.ruff]
 target-version = "py313"
