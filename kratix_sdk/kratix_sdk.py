@@ -179,7 +179,9 @@ class KratixSDK:
         """Suspends the pipeline by writing workflow-control.yaml with suspend: true.
 
         Kratix will stop further pipeline execution and set the workflow phase to
-        Suspended. If a message is provided, it will be surfaced in the object's status."""
+        Suspended.
+
+        If a message is provided, it will be surfaced in the object's status."""
         data: dict = {"suspend": True}
         if message:
             data["message"] = message
