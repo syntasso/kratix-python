@@ -235,6 +235,51 @@ def test_is_delete_action(monkeypatch):
     assert sdk.is_delete_action() is False
 
 
+# ---------- Suspend / Retry Tests ----------
+
+
+def test_suspend_writes_workflow_control():
+    sdk = ks.KratixSDK()
+
+    sdk.suspend()
+
+    written = yaml.safe_load((ks.get_metadata_dir() / "workflow-control.yaml").read_text())
+    assert written == {"suspend": True}
+
+
+def test_suspend_with_message():
+    sdk = ks.KratixSDK()
+
+    sdk.suspend(message="waiting for dependency")
+
+    written = yaml.safe_load((ks.get_metadata_dir() / "workflow-control.yaml").read_text())
+    assert written == {"suspend": True, "message": "waiting for dependency"}
+
+
+def test_retry_after_writes_workflow_control():
+    sdk = ks.KratixSDK()
+
+    sdk.retry_after("5m")
+
+    written = yaml.safe_load((ks.get_metadata_dir() / "workflow-control.yaml").read_text())
+    assert written == {"retryAfter": "5m"}
+
+
+def test_retry_after_with_message():
+    sdk = ks.KratixSDK()
+
+    sdk.retry_after("1h30m", message="configmap not found yet")
+
+    written = yaml.safe_load((ks.get_metadata_dir() / "workflow-control.yaml").read_text())
+    assert written == {"retryAfter": "1h30m", "message": "configmap not found yet"}
+
+
+def test_retry_after_empty_duration_raises():
+    sdk = ks.KratixSDK()
+    with pytest.raises(ValueError):
+        sdk.retry_after("")
+
+
 # ---------- Write to Output Tests ----------
 
 
