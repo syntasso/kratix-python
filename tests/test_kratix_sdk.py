@@ -236,6 +236,43 @@ def test_is_delete_action(monkeypatch):
     assert sdk.is_delete_action() is False
 
 
+# ---------- timedelta_to_go_duration Tests ----------
+
+
+@pytest.mark.parametrize(
+    "td,expected",
+    [
+        (timedelta(hours=1, minutes=30, seconds=5, milliseconds=300), "1h30m5s300ms"),
+        (timedelta(hours=1), "1h"),
+        (timedelta(minutes=30), "30m"),
+        (timedelta(seconds=5), "5s"),
+        (timedelta(milliseconds=300), "300ms"),
+        (timedelta(microseconds=500), "500us"),
+        (timedelta(days=1), "24h"),
+        (timedelta(hours=2, microseconds=1), "2h1us"),
+        (timedelta(milliseconds=1, microseconds=500), "1ms500us"),
+        (
+            timedelta(
+                hours=1, minutes=30, seconds=5, milliseconds=300, microseconds=123
+            ),
+            "1h30m5s300ms123us",
+        ),
+    ],
+)
+def test_timedelta_to_go_duration(td, expected):
+    assert ks.timedelta_to_go_duration(td) == expected
+
+
+def test_timedelta_to_go_duration_raises_on_zero():
+    with pytest.raises(ValueError):
+        ks.timedelta_to_go_duration(timedelta(seconds=0))
+
+
+def test_timedelta_to_go_duration_raises_on_negative():
+    with pytest.raises(ValueError):
+        ks.timedelta_to_go_duration(timedelta(seconds=-1))
+
+
 # ---------- Suspend / Retry Tests ----------
 
 
