@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import yaml
@@ -40,6 +41,32 @@ def set_output_dir(path: Path | str) -> None:
 def set_metadata_dir(path: Path | str) -> None:
     global METADATA_DIR
     METADATA_DIR = Path(path)
+
+
+def timedelta_to_go_duration(td: timedelta) -> str:
+    """Converts a Python timedelta to a Go duration string (e.g. "1h30m5s300ms")."""
+    total_microseconds = (td.days * 86400 + td.seconds) * 1_000_000 + td.microseconds
+    if total_microseconds <= 0:
+        raise ValueError("duration must be positive")
+
+    hours, remainder = divmod(total_microseconds, 3_600_000_000)
+    minutes, remainder = divmod(remainder, 60_000_000)
+    seconds, remainder = divmod(remainder, 1_000_000)
+    milliseconds, microseconds = divmod(remainder, 1_000)
+
+    parts = []
+    if hours:
+        parts.append(f"{hours}h")
+    if minutes:
+        parts.append(f"{minutes}m")
+    if seconds:
+        parts.append(f"{seconds}s")
+    if milliseconds:
+        parts.append(f"{milliseconds}ms")
+    if microseconds:
+        parts.append(f"{microseconds}us")
+
+    return "".join(parts)
 
 
 class KratixSDK:
@@ -187,17 +214,14 @@ class KratixSDK:
             data["message"] = message
         self._write_workflow_control(data)
 
-    def write_retry_after(self, duration: str, message: str = "") -> None:
+    def write_retry_after(self, duration: timedelta, message: str = "") -> None:
         """Writes workflow-control.yaml with retryAfter set to the given duration.
 
-        The duration must be a valid Go duration string (e.g. "5m", "1h30m", "300ms").
         Kratix will requeue the pipeline after the specified duration and increment
         the attempt counter in the object's status.
 
         If a message is provided, it will be surfaced in the object's status."""
-        if not duration:
-            raise ValueError("duration must be a non-empty string")
-        data: dict = {"retryAfter": duration}
+        data: dict = {"retryAfter": timedelta_to_go_duration(duration)}
         if message:
             data["message"] = message
         self._write_workflow_control(data)

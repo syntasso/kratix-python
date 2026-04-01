@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -260,32 +261,54 @@ def test_write_suspend_with_message():
     assert written == {"suspend": True, "message": "waiting for dependency"}
 
 
-def test_write_retry_after_writes_workflow_control():
+def test_write_retry_after_minutes():
     sdk = ks.KratixSDK()
 
-    sdk.write_retry_after("5m")
+    sdk.write_retry_after(timedelta(minutes=5, seconds=125))
 
     written = yaml.safe_load(
         (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
     )
-    assert written == {"retryAfter": "5m"}
+    assert written == {"retryAfter": "7m5s"}
+
+
+def test_write_retry_after_days():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(days=1, hours=3, minutes=66))
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "28h6m"}
+
+
+def test_write_retry_after_hours():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(hours=3, seconds=65))
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "3h1m5s"}
 
 
 def test_write_retry_after_with_message():
     sdk = ks.KratixSDK()
 
-    sdk.write_retry_after("1h30m", message="configmap not found yet")
+    sdk.write_retry_after(timedelta(hours=1, minutes=30), message="configmap not found")
 
     written = yaml.safe_load(
         (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
     )
-    assert written == {"retryAfter": "1h30m", "message": "configmap not found yet"}
+    assert written == {"retryAfter": "1h30m", "message": "configmap not found"}
 
 
-def test_write_retry_after_empty_duration_raises():
+def test_write_retry_after_zero_duration_raises():
     sdk = ks.KratixSDK()
     with pytest.raises(ValueError):
-        sdk.write_retry_after("")
+        sdk.write_retry_after(timedelta(0))
 
 
 # ---------- Write to Output Tests ----------
