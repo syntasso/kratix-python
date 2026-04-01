@@ -1,3 +1,4 @@
+from datetime import timedelta
 from pathlib import Path
 
 import pytest
@@ -233,6 +234,118 @@ def test_is_delete_action(monkeypatch):
 
     monkeypatch.setenv("KRATIX_WORKFLOW_ACTION", "configure")
     assert sdk.is_delete_action() is False
+
+
+# ---------- timedelta_to_go_duration Tests ----------
+
+
+@pytest.mark.parametrize(
+    "td,expected",
+    [
+        (timedelta(hours=1, minutes=30, seconds=5, milliseconds=300), "1h30m5s300ms"),
+        (timedelta(hours=1), "1h"),
+        (timedelta(minutes=30), "30m"),
+        (timedelta(seconds=5), "5s"),
+        (timedelta(milliseconds=300), "300ms"),
+        (timedelta(microseconds=500), "500us"),
+        (timedelta(days=1), "24h"),
+        (timedelta(hours=2, microseconds=1), "2h1us"),
+        (timedelta(milliseconds=1, microseconds=500), "1ms500us"),
+        (
+            timedelta(
+                hours=1, minutes=30, seconds=5, milliseconds=300, microseconds=123
+            ),
+            "1h30m5s300ms123us",
+        ),
+    ],
+)
+def test_timedelta_to_go_duration(td, expected):
+    assert ks.timedelta_to_go_duration(td) == expected
+
+
+def test_timedelta_to_go_duration_raises_on_zero():
+    with pytest.raises(ValueError):
+        ks.timedelta_to_go_duration(timedelta(seconds=0))
+
+
+def test_timedelta_to_go_duration_raises_on_negative():
+    with pytest.raises(ValueError):
+        ks.timedelta_to_go_duration(timedelta(seconds=-1))
+
+
+# ---------- Suspend / Retry Tests ----------
+
+
+def test_write_suspend_writes_workflow_control():
+    sdk = ks.KratixSDK()
+
+    sdk.write_suspend()
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"suspend": True}
+
+
+def test_write_suspend_with_message():
+    sdk = ks.KratixSDK()
+
+    sdk.write_suspend(message="waiting for dependency")
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"suspend": True, "message": "waiting for dependency"}
+
+
+def test_write_retry_after_minutes():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(minutes=5, seconds=125))
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "7m5s"}
+
+
+def test_write_retry_after_days():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(days=1, hours=3, minutes=66))
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "28h6m"}
+
+
+def test_write_retry_after_hours():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(hours=3, seconds=65))
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "3h1m5s"}
+
+
+def test_write_retry_after_with_message():
+    sdk = ks.KratixSDK()
+
+    sdk.write_retry_after(timedelta(hours=1, minutes=30), message="configmap not found")
+
+    written = yaml.safe_load(
+        (ks.get_metadata_dir() / "workflow-control.yaml").read_text()
+    )
+    assert written == {"retryAfter": "1h30m", "message": "configmap not found"}
+
+
+def test_write_retry_after_zero_duration_raises():
+    sdk = ks.KratixSDK()
+    with pytest.raises(ValueError):
+        sdk.write_retry_after(timedelta(0))
 
 
 # ---------- Write to Output Tests ----------

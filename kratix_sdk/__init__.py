@@ -8,6 +8,7 @@ from .kratix_sdk import (
     set_input_dir,
     set_metadata_dir,
     set_output_dir,
+    timedelta_to_go_duration,
 )
 from .promise import Promise
 from .resource import Resource
@@ -34,5 +35,6 @@ __all__ = [
     "get_output_dir",
     "get_metadata_dir",
     "set_metadata_dir",
+    "timedelta_to_go_duration",
     "__version__",
 ]
