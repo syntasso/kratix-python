@@ -175,8 +175,8 @@ class KratixSDK:
         """Returns true if the workflow is a delete action."""
         return self.workflow_action() == "delete"
 
-    def suspend(self, message: str = "") -> None:
-        """Suspends the pipeline by writing workflow-control.yaml with suspend: true.
+    def write_suspend(self, message: str = "") -> None:
+        """Writes workflow-control.yaml with suspend: true.
 
         Kratix will stop further pipeline execution and set the workflow phase to
         Suspended.
@@ -187,8 +187,8 @@ class KratixSDK:
             data["message"] = message
         self._write_workflow_control(data)
 
-    def retry_after(self, duration: str, message: str = "") -> None:
-        """Configures the pipeline to be retried after a given duration.
+    def write_retry_after(self, duration: str, message: str = "") -> None:
+        """Writes workflow-control.yaml with retryAfter set to the given duration.
 
         The duration must be a valid Go duration string (e.g. "5m", "1h30m", "300ms").
         Kratix will requeue the pipeline after the specified duration and increment
