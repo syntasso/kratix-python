@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.3](https://github.com/syntasso/kratix-python/compare/v0.4.2...v0.4.3) (2026-04-01)
+
+
+### Features
+
+* add helpers for suspend and retry pipelines ([#54](https://github.com/syntasso/kratix-python/issues/54)) ([b60f454](https://github.com/syntasso/kratix-python/commit/b60f454b055e7919605fb31f7a3268a625311ad4))
+
+
+### Build System
+
+* **deps:** update kubernetes requirement ([#53](https://github.com/syntasso/kratix-python/issues/53)) ([1fa6d88](https://github.com/syntasso/kratix-python/commit/1fa6d88bdc0c8141818c7aa538b7bf333b569ff2))
+
 ## [0.4.2](https://github.com/syntasso/kratix-python/compare/v0.4.1...v0.4.2) (2025-12-09)
 
 
