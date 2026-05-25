@@ -7,7 +7,7 @@ authors = [{ name = "Syntasso", email = "hello@syntasso.io" }]
 license = "Apache-2.0"
 keywords = ["kratix", "platform-engineering", "promises", "sdk"]
 requires-python = ">=3.10"
-dependencies = ["kubernetes >=33.0.0,<36", "PyYAML>=6.0.0,<7"]
+dependencies = ["kubernetes >=33.0.0,<37", "PyYAML>=6.0.0,<7"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
