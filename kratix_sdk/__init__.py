@@ -20,7 +20,7 @@ try:
 except (
     importlib_metadata.PackageNotFoundError
 ):  # pragma: no cover - source tree fallback
-    __version__ = "0.4.3"
+    __version__ = "0.4.4"
 
 __all__ = [
     "Status",

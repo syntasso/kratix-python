@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.4](https://github.com/syntasso/kratix-python/compare/v0.4.3...v0.4.4) (2026-06-01)
+
+
+### Build System
+
+* **deps:** update kubernetes requirement ([#56](https://github.com/syntasso/kratix-python/issues/56)) ([58129fa](https://github.com/syntasso/kratix-python/commit/58129fa464bfb1d95b00d7bafe26ca3dd986638b))
+
 ## [0.4.3](https://github.com/syntasso/kratix-python/compare/v0.4.2...v0.4.3) (2026-04-01)
 
 
